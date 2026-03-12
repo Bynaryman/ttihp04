@@ -34,7 +34,7 @@ The flow pins this specialization:
 - Canonical input MLIR: `flow/mlir/s3fdp_loop_accum.mlir`
 - Stage snapshots: `generated/ir-stages/*.mlir`
 - Generated core SV: `src/generated/s3fdp_core.sv`
-- TinyTapeout wrapper: `src/project.sv`
+- TinyTapeout wrapper + embedded generated core for CI: `src/project.v`
 
 Main staged outputs:
 
@@ -137,7 +137,6 @@ The test sends two identical bounded frames in continuous slots and checks the s
 ## Tiny Tapeout notes
 
 - `info.yaml` is configured for SystemVerilog and 50 MHz.
-- Sources listed for submission:
-  - `project.sv`
-  - `generated/s3fdp_core.sv`
+- Source listed for submission:
+  - `project.v` (contains wrapper + embedded generated core module)
 - Datasheet content is in `docs/info.md`.
