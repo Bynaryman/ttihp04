@@ -6,7 +6,7 @@ SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = project.sv generated/s3fdp_core.sv
 
 ifneq ($(GATES),yes)
 
@@ -33,6 +33,7 @@ endif
 
 # Allow sharing configuration between design and testbench via `include`:
 COMPILE_ARGS 		+= -I$(SRC_DIR)
+COMPILE_ARGS    += -g2012
 
 # Include the testbench sources:
 VERILOG_SOURCES += $(PWD)/tb.v
