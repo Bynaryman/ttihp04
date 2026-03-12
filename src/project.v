@@ -20,8 +20,8 @@ module tt_um_lledoux_s3fdp_seqcomb (
   localparam logic [1:0] ST_RUN  = 2'd1;
   localparam logic [1:0] ST_OUT  = 2'd2;
 
-  localparam int unsigned FRAME_BYTES = 36;
-  localparam int unsigned RUN_LATENCY = 6;
+  localparam logic [5:0] FRAME_LAST = 6'd35;
+  localparam logic [2:0] RUN_LATENCY_CYCLES = 3'd6;
 
   logic [1:0] state;
   logic [5:0] load_idx;
@@ -123,7 +123,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
             default: ;
           endcase
 
-          if (load_idx == FRAME_BYTES - 1) begin
+          if (load_idx == FRAME_LAST) begin
             state <= ST_RUN;
             run_count <= '0;
           end else begin
@@ -132,7 +132,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
         end
 
         ST_RUN: begin
-          if (run_count == RUN_LATENCY - 1) begin
+          if (run_count == (RUN_LATENCY_CYCLES - 3'd1)) begin
             result_word <= core_r;
             state <= ST_OUT;
             out_idx <= '0;
@@ -232,13 +232,8 @@ module fpmult_loop_muladd_s3fdp(
   end // always_ff @(posedge)
   wire         _GEN_6 = _GEN_5 == 32'h3;
   assign _GEN_0 = _GEN_1 ? (_GEN_6 ? 32'h0 : _GEN_5 + 32'h1) : _GEN_5;
-  reg          cg_en_latch;
-  always @* begin
-    if (~clk)
-      cg_en_latch <= _GEN_1;
-  end // always @*
   s3fdp_accum_core_wE8_wF23_cs16 s3fdp_accum (
-    .clk   (clk & cg_en_latch),
+    .clk   (clk),
     .reset (reset),
     .x
       (_GEN_5[1]

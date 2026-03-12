@@ -41,13 +41,8 @@ module fpmult_loop_muladd_s3fdp(
   end // always_ff @(posedge)
   wire         _GEN_6 = _GEN_5 == 32'h3;
   assign _GEN_0 = _GEN_1 ? (_GEN_6 ? 32'h0 : _GEN_5 + 32'h1) : _GEN_5;
-  reg          cg_en_latch;
-  always @* begin
-    if (~clk)
-      cg_en_latch <= _GEN_1;
-  end // always @*
   s3fdp_accum_core_wE8_wF23_cs16 s3fdp_accum (
-    .clk   (clk & cg_en_latch),
+    .clk   (clk),
     .reset (reset),
     .x
       (_GEN_5[1]

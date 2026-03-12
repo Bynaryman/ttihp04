@@ -20,8 +20,8 @@ module tt_um_lledoux_s3fdp_seqcomb (
   localparam logic [1:0] ST_RUN  = 2'd1;
   localparam logic [1:0] ST_OUT  = 2'd2;
 
-  localparam int unsigned FRAME_BYTES = 36;
-  localparam int unsigned RUN_LATENCY = 6;
+  localparam logic [5:0] FRAME_LAST = 6'd35;
+  localparam logic [2:0] RUN_LATENCY_CYCLES = 3'd6;
 
   logic [1:0] state;
   logic [5:0] load_idx;
@@ -123,7 +123,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
             default: ;
           endcase
 
-          if (load_idx == FRAME_BYTES - 1) begin
+          if (load_idx == FRAME_LAST) begin
             state <= ST_RUN;
             run_count <= '0;
           end else begin
@@ -132,7 +132,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
         end
 
         ST_RUN: begin
-          if (run_count == RUN_LATENCY - 1) begin
+          if (run_count == (RUN_LATENCY_CYCLES - 3'd1)) begin
             result_word <= core_r;
             state <= ST_OUT;
             out_idx <= '0;
