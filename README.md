@@ -1,18 +1,26 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# Tiny Tapeout S3FDP Seq+Comb MLIR Flow (`ttsky26a`)
+# Pattern-Guided Arithmetic Optimizations with MLIR & TinyTapeout (`ttsky26a`)
 
-Top module: `tt_um_lledoux_s3fdp_seqcomb`
+## At a glance
+
+- Top module: `tt_um_lledoux_s3fdp_seqcomb`
+- Target platform: TinyTapeout (Sky130)
+- Frontend IR: MLIR (`scf` + `memref` + `arith`)
+- Backend lowering: Emeraude passes + FloPoCo2 + CIRCT SV export
+- Specialized arithmetic: S3FDP (`ovf=5, msb=6, lsb=-6, chunk_size=16`)
 
 ## Overview
 
-This project implements a compiler-guided arithmetic specialization flow:
+This repository is an artifact for a compiler-to-hardware specialization method: recognize a structured floating-point accumulation loop in MLIR and lower it to a dedicated arithmetic circuit instead of a fully generic IEEE datapath.
 
-1. Detect a structured accumulation loop in MLIR (`scf.for` + `memref.load/store` + `arith.mulf/addf`).
-2. Replace generic IEEE float datapath behavior with a specialized S3FDP accumulator.
-3. Lower to sequential+combinational hardware with CIRCT and package it for TinyTapeout.
+Methodologically, the flow applies three steps:
 
-Many workloads include multiply-accumulate loop shapes where full IEEE operator generality is costly. The flow recognizes this loop form and emits a narrower arithmetic circuit tuned for bounded numerical regimes.
+1. Detect loop-carried MAC structure in MLIR (`scf.for`, `memref.load/store`, `arith.mulf/addf`).
+2. Replace the arithmetic with a specialized S3FDP accumulator (truncated Kulisch-like accumulation).
+3. Lower to seq/comb hardware and SystemVerilog for TinyTapeout integration.
+
+The focus is not broad operator coverage; it is a constrained but reproducible path for a common kernel class (dot-product style accumulation), with explicit intermediate IR artifacts and generated RTL.
 
 ## Arithmetic Model
 
