@@ -288,6 +288,10 @@ make clean
 make -B
 ```
 
+Waveform screenshot (byte stream load, compute latency, and byte-wise output):
+
+![Waveform screenshot](docs/waves.png)
+
 Current cocotb check uses a simple deterministic vector:
 
 - `a=[1.0, 0, 0, 0]`

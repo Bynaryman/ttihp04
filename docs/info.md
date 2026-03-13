@@ -146,6 +146,10 @@ make clean
 make -B
 ```
 
+Waveform screenshot:
+
+![Waveform screenshot](waves.png)
+
 ## External hardware
 
 No external hardware is required.
