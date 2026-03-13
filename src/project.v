@@ -21,7 +21,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
   localparam logic [1:0] ST_OUT  = 2'd2;
 
   localparam logic [4:0] FRAME_LAST = 5'd19;
-  localparam logic [2:0] RUN_LATENCY_CYCLES = 3'd6;
+  localparam logic [2:0] RUN_LATENCY_CYCLES = 3'd3;
 
   logic [1:0] state;
   logic [4:0] load_idx;

@@ -6,7 +6,7 @@ from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
 FRAME_BYTES = 20
-RUN_CYCLES = 6
+RUN_CYCLES = 3
 OUT_BYTES = 4
 COMPUTE_SLOT_BYTES = RUN_CYCLES + OUT_BYTES
 
@@ -14,8 +14,7 @@ COMPUTE_SLOT_BYTES = RUN_CYCLES + OUT_BYTES
 A_WORDS = [0x3F800000, 0x00000000]
 B_WORDS = [0x3F800000, 0x00000000]
 C0_WORD = 0x00000000
-# Reduced design with ovf=2,msb=4 currently yields 2.0f for this vector.
-EXPECTED_WORD = 0x40000000
+EXPECTED_WORD = 0x3F800000
 
 
 def word_to_le_bytes(word: int) -> list[int]:
@@ -83,7 +82,8 @@ async def test_streaming_s3fdp_wrapper(dut):
     stream = frame + ([0] * COMPUTE_SLOT_BYTES) + frame + ([0] * COMPUTE_SLOT_BYTES)
     samples = await stream_and_collect_words(dut, stream)
 
-    nominal_rel_start = FRAME_BYTES + RUN_CYCLES - 1
+    # For this wrapper FSM, output bytes begin one cycle after ST_OUT entry.
+    nominal_rel_start = FRAME_BYTES + RUN_CYCLES + 1
     frame0_start = 0
     frame1_start = FRAME_BYTES + COMPUTE_SLOT_BYTES
     hit0 = find_expected_near(samples, frame0_start + nominal_rel_start, EXPECTED_WORD)
