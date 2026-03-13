@@ -12,14 +12,22 @@ Top module: `tt_um_lledoux_s3fdp_seqcomb`
 ./scripts/generate_s3fdp_core.sh
 ```
 
-Default tool paths used by the script:
+Tool locations are environment-driven:
 
-- `EMERAUDE_REPO=/home/lledoux/Documents/work/repositories/emeraude-mlir`
-- `EMERAUDE_MLIR_OPT=$EMERAUDE_REPO/build/bin/emeraude-mlir-opt`
-- `CIRCT_BIN_DIR=/home/lledoux/Documents/work/postdoc/circt/build/bin`
-- `CIRCT_OPT=$CIRCT_BIN_DIR/circt-opt`
+- `EMERAUDE_MLIR_OPT` and `CIRCT_OPT` are read from env if set.
+- If unset, the script falls back to binaries in `PATH` (`emeraude-mlir-opt`, `circt-opt`).
+- You can also provide roots via `EMERAUDE_REPO` and `CIRCT_BIN_DIR`.
 
-Environment overrides are supported (`EMERAUDE_REPO`, `EMERAUDE_MLIR_OPT`, `CIRCT_BIN_DIR`, `CIRCT_OPT`, `INPUT_MLIR`, `ARTIFACT_DIR`, `CORE_SV_OUT`).
+Example invocation (no hardcoded machine paths in repo):
+
+```sh
+EMERAUDE_MLIR_OPT="$HOME/tools/emeraude-mlir/build/bin/emeraude-mlir-opt" \
+CIRCT_OPT="$HOME/tools/circt/build/bin/circt-opt" \
+./scripts/generate_s3fdp_core.sh
+```
+
+Additional env overrides:
+`INPUT_MLIR`, `ARTIFACT_DIR`, `CORE_SV_OUT`, `WRAPPER_SV_IN`, `PROJECT_V_OUT`.
 
 ## Fixed S3FDP configuration
 
@@ -136,7 +144,7 @@ The test sends two identical bounded frames in continuous slots and checks the s
 
 ## Tiny Tapeout notes
 
-- `info.yaml` is configured for SystemVerilog and 50 MHz.
+- `info.yaml` is configured for SystemVerilog and 5 MHz.
 - Source listed for submission:
   - `project.v` (contains wrapper + embedded generated core module)
 - Datasheet content is in `docs/info.md`.

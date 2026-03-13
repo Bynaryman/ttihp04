@@ -3,10 +3,12 @@ set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-EMERAUDE_REPO="${EMERAUDE_REPO:-/home/lledoux/Documents/work/repositories/emeraude-mlir}"
-EMERAUDE_MLIR_OPT="${EMERAUDE_MLIR_OPT:-$EMERAUDE_REPO/build/bin/emeraude-mlir-opt}"
-CIRCT_BIN_DIR="${CIRCT_BIN_DIR:-/home/lledoux/Documents/work/postdoc/circt/build/bin}"
-CIRCT_OPT="${CIRCT_OPT:-$CIRCT_BIN_DIR/circt-opt}"
+EMERAUDE_REPO="${EMERAUDE_REPO:-}"
+CIRCT_BIN_DIR="${CIRCT_BIN_DIR:-}"
+EMERAUDE_MLIR_OPT="${EMERAUDE_MLIR_OPT:-${EMERAUDE_REPO:+$EMERAUDE_REPO/build/bin/emeraude-mlir-opt}}"
+CIRCT_OPT="${CIRCT_OPT:-${CIRCT_BIN_DIR:+$CIRCT_BIN_DIR/circt-opt}}"
+EMERAUDE_MLIR_OPT="${EMERAUDE_MLIR_OPT:-emeraude-mlir-opt}"
+CIRCT_OPT="${CIRCT_OPT:-circt-opt}"
 
 INPUT_MLIR="${INPUT_MLIR:-$repo_root/flow/mlir/s3fdp_loop_accum.mlir}"
 ARTIFACT_DIR="${ARTIFACT_DIR:-$repo_root/generated/ir-stages}"
@@ -16,12 +18,26 @@ PROJECT_V_OUT="${PROJECT_V_OUT:-$repo_root/src/project.v}"
 
 S3FDP_OPTS='lowering-mode=specialized target-frequency=5e7 specializations=enable=s3fdp,s3fdp.ovf=5,s3fdp.msb=6,s3fdp.lsb=-6,s3fdp.chunk_size=16'
 
-for tool in "$EMERAUDE_MLIR_OPT" "$CIRCT_OPT"; do
-  if [[ ! -x "$tool" ]]; then
-    echo "error: required executable not found: $tool" >&2
+resolve_tool() {
+  local tool="$1"
+  if [[ "$tool" == */* ]]; then
+    if [[ ! -x "$tool" ]]; then
+      echo "error: required executable not found: $tool" >&2
+      exit 1
+    fi
+    echo "$tool"
+    return 0
+  fi
+
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    echo "error: required executable not found in PATH: $tool" >&2
     exit 1
   fi
-done
+  command -v "$tool"
+}
+
+EMERAUDE_MLIR_OPT="$(resolve_tool "$EMERAUDE_MLIR_OPT")"
+CIRCT_OPT="$(resolve_tool "$CIRCT_OPT")"
 
 if [[ ! -f "$INPUT_MLIR" ]]; then
   echo "error: input MLIR not found: $INPUT_MLIR" >&2
