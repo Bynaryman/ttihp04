@@ -4,7 +4,7 @@ project:
   author:       "L. Ledoux"      # Your name
   discord:      "binaryman"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "Streaming byte-fed S3FDP seq+comb accumulator generated from MLIR for-loop."
-  language:     "SystemVerilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
+  language:     "SystemVerilog/MLIR" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     500000       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
