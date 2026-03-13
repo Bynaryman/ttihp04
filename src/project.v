@@ -20,21 +20,21 @@ module tt_um_lledoux_s3fdp_seqcomb (
   localparam logic [1:0] ST_RUN  = 2'd1;
   localparam logic [1:0] ST_OUT  = 2'd2;
 
-  localparam logic [5:0] FRAME_LAST = 6'd35;
+  localparam logic [4:0] FRAME_LAST = 5'd19;
   localparam logic [2:0] RUN_LATENCY_CYCLES = 3'd6;
 
   logic [1:0] state;
-  logic [5:0] load_idx;
+  logic [4:0] load_idx;
   logic [2:0] run_count;
   logic [1:0] out_idx;
 
-  logic [31:0] a_words [0:3];
-  logic [31:0] b_words [0:3];
+  logic [31:0] a_words [0:1];
+  logic [31:0] b_words [0:1];
   logic [31:0] c0_word;
   logic [31:0] result_word;
 
-  logic [3:0][31:0] core_a;
-  logic [3:0][31:0] core_b;
+  logic [1:0][31:0] core_a;
+  logic [1:0][31:0] core_b;
   logic [1:0][31:0] core_c;
   logic core_reset;
   logic [31:0] core_r;
@@ -42,12 +42,8 @@ module tt_um_lledoux_s3fdp_seqcomb (
   always @(*) begin
     core_a[0] = a_words[0];
     core_a[1] = a_words[1];
-    core_a[2] = a_words[2];
-    core_a[3] = a_words[3];
     core_b[0] = b_words[0];
     core_b[1] = b_words[1];
-    core_b[2] = b_words[2];
-    core_b[3] = b_words[3];
     core_c[0] = c0_word;
     core_c[1] = 32'h00000000;
   end
@@ -72,54 +68,34 @@ module tt_um_lledoux_s3fdp_seqcomb (
       out_idx <= '0;
       a_words[0] <= '0;
       a_words[1] <= '0;
-      a_words[2] <= '0;
-      a_words[3] <= '0;
       b_words[0] <= '0;
       b_words[1] <= '0;
-      b_words[2] <= '0;
-      b_words[3] <= '0;
       c0_word <= '0;
       result_word <= '0;
     end else if (ena) begin
       case (state)
         ST_LOAD: begin
           case (load_idx)
-            6'd0:  a_words[0][7:0]   <= ui_in;
-            6'd1:  a_words[0][15:8]  <= ui_in;
-            6'd2:  a_words[0][23:16] <= ui_in;
-            6'd3:  a_words[0][31:24] <= ui_in;
-            6'd4:  a_words[1][7:0]   <= ui_in;
-            6'd5:  a_words[1][15:8]  <= ui_in;
-            6'd6:  a_words[1][23:16] <= ui_in;
-            6'd7:  a_words[1][31:24] <= ui_in;
-            6'd8:  a_words[2][7:0]   <= ui_in;
-            6'd9:  a_words[2][15:8]  <= ui_in;
-            6'd10: a_words[2][23:16] <= ui_in;
-            6'd11: a_words[2][31:24] <= ui_in;
-            6'd12: a_words[3][7:0]   <= ui_in;
-            6'd13: a_words[3][15:8]  <= ui_in;
-            6'd14: a_words[3][23:16] <= ui_in;
-            6'd15: a_words[3][31:24] <= ui_in;
-            6'd16: b_words[0][7:0]   <= ui_in;
-            6'd17: b_words[0][15:8]  <= ui_in;
-            6'd18: b_words[0][23:16] <= ui_in;
-            6'd19: b_words[0][31:24] <= ui_in;
-            6'd20: b_words[1][7:0]   <= ui_in;
-            6'd21: b_words[1][15:8]  <= ui_in;
-            6'd22: b_words[1][23:16] <= ui_in;
-            6'd23: b_words[1][31:24] <= ui_in;
-            6'd24: b_words[2][7:0]   <= ui_in;
-            6'd25: b_words[2][15:8]  <= ui_in;
-            6'd26: b_words[2][23:16] <= ui_in;
-            6'd27: b_words[2][31:24] <= ui_in;
-            6'd28: b_words[3][7:0]   <= ui_in;
-            6'd29: b_words[3][15:8]  <= ui_in;
-            6'd30: b_words[3][23:16] <= ui_in;
-            6'd31: b_words[3][31:24] <= ui_in;
-            6'd32: c0_word[7:0]      <= ui_in;
-            6'd33: c0_word[15:8]     <= ui_in;
-            6'd34: c0_word[23:16]    <= ui_in;
-            6'd35: c0_word[31:24]    <= ui_in;
+            5'd0:  a_words[0][7:0]   <= ui_in;
+            5'd1:  a_words[0][15:8]  <= ui_in;
+            5'd2:  a_words[0][23:16] <= ui_in;
+            5'd3:  a_words[0][31:24] <= ui_in;
+            5'd4:  a_words[1][7:0]   <= ui_in;
+            5'd5:  a_words[1][15:8]  <= ui_in;
+            5'd6:  a_words[1][23:16] <= ui_in;
+            5'd7:  a_words[1][31:24] <= ui_in;
+            5'd8:  b_words[0][7:0]   <= ui_in;
+            5'd9:  b_words[0][15:8]  <= ui_in;
+            5'd10: b_words[0][23:16] <= ui_in;
+            5'd11: b_words[0][31:24] <= ui_in;
+            5'd12: b_words[1][7:0]   <= ui_in;
+            5'd13: b_words[1][15:8]  <= ui_in;
+            5'd14: b_words[1][23:16] <= ui_in;
+            5'd15: b_words[1][31:24] <= ui_in;
+            5'd16: c0_word[7:0]      <= ui_in;
+            5'd17: c0_word[15:8]     <= ui_in;
+            5'd18: c0_word[23:16]    <= ui_in;
+            5'd19: c0_word[31:24]    <= ui_in;
             default: ;
           endcase
 
@@ -127,7 +103,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
             state <= ST_RUN;
             run_count <= '0;
           end else begin
-            load_idx <= load_idx + 6'd1;
+            load_idx <= load_idx + 5'd1;
           end
         end
 
@@ -147,12 +123,8 @@ module tt_um_lledoux_s3fdp_seqcomb (
             load_idx <= '0;
             a_words[0] <= '0;
             a_words[1] <= '0;
-            a_words[2] <= '0;
-            a_words[3] <= '0;
             b_words[0] <= '0;
             b_words[1] <= '0;
-            b_words[2] <= '0;
-            b_words[3] <= '0;
             c0_word <= '0;
           end else begin
             out_idx <= out_idx + 2'd1;
@@ -193,20 +165,20 @@ endmodule
 module fpmult_loop_muladd_s3fdp(
   input              clk,
                      reset,
-  input  [3:0][31:0] a,
+  input  [1:0][31:0] a,
                      b,
-  input  [1:0][31:0] c,
+                     c,
   input              clk_0,
   output [31:0]      r
 );
 
-  wire [31:0]  _GEN;
-  wire [31:0]  _GEN_0;
-  wire         _GEN_1;
-  wire [31:0]  _s3fdp_accum_r;
-  wire [127:0] _GEN_2 = /*cast(bit[127:0])*/b;
-  wire [127:0] _GEN_3 = /*cast(bit[127:0])*/a;
-  reg  [31:0]  c_mem[0:1];
+  wire [31:0] _GEN;
+  wire [31:0] _GEN_0;
+  wire        _GEN_1;
+  wire [31:0] _s3fdp_accum_r;
+  wire [63:0] _GEN_2 = /*cast(bit[63:0])*/b;
+  wire [63:0] _GEN_3 = /*cast(bit[63:0])*/a;
+  reg  [31:0] c_mem[0:1];
   always_ff @(posedge clk_0) begin
     if (reset) begin
     end
@@ -215,7 +187,7 @@ module fpmult_loop_muladd_s3fdp(
         c_mem[1'h0] <= _s3fdp_accum_r;
     end
   end // always_ff @(posedge)
-  reg  [31:0]  _GEN_4;
+  reg  [31:0] _GEN_4;
   always_ff @(posedge clk_0) begin
     if (reset)
       _GEN_4 <= 32'h0;
@@ -223,26 +195,20 @@ module fpmult_loop_muladd_s3fdp(
       _GEN_4 <= _GEN;
   end // always_ff @(posedge)
   assign _GEN_1 = _GEN_4 == 32'h0;
-  reg  [31:0]  _GEN_5;
+  reg  [31:0] _GEN_5;
   always_ff @(posedge clk_0) begin
     if (reset)
       _GEN_5 <= 32'h0;
     else
       _GEN_5 <= _GEN_0;
   end // always_ff @(posedge)
-  wire         _GEN_6 = _GEN_5 == 32'h3;
+  wire        _GEN_6 = _GEN_5 == 32'h1;
   assign _GEN_0 = _GEN_1 ? (_GEN_6 ? 32'h0 : _GEN_5 + 32'h1) : _GEN_5;
   s3fdp_accum_core_wE8_wF23_cs16 s3fdp_accum (
     .clk   (clk),
     .reset (reset),
-    .x
-      (_GEN_5[1]
-         ? (_GEN_5[0] ? _GEN_3[127:96] : _GEN_3[95:64])
-         : _GEN_5[0] ? _GEN_3[63:32] : _GEN_3[31:0]),
-    .y
-      (_GEN_5[1]
-         ? (_GEN_5[0] ? _GEN_2[127:96] : _GEN_2[95:64])
-         : _GEN_5[0] ? _GEN_2[63:32] : _GEN_2[31:0]),
+    .x     (_GEN_5[0] ? _GEN_3[63:32] : _GEN_3[31:0]),
+    .y     (_GEN_5[0] ? _GEN_2[63:32] : _GEN_2[31:0]),
     .r     (_s3fdp_accum_r)
   );
   assign _GEN = _GEN_1 & _GEN_6 ? 32'h0 : _GEN_4;
@@ -257,69 +223,58 @@ module s3fdp_accum_core_wE8_wF23_cs16(
   output [31:0] r
 );
 
-  reg  [2:0]  _GEN;
-  reg  [16:0] _GEN_0;
-  reg         _GEN_1;
-  wire        _GEN_2 = x[30:23] == 8'h0;
-  wire        _GEN_3 = y[30:23] == 8'h0;
-  wire        _GEN_4 = x[31] ^ y[31];
-  wire [8:0]  _GEN_5 =
-    {1'h0, _GEN_2 ? 8'h1 : x[30:23]} + {1'h0, _GEN_3 ? 8'h1 : y[30:23]} - 9'hF7;
-  wire [64:0] _GEN_6 =
-    _GEN_5[7] | _GEN_5[8]
-      ? 65'h0
-      : {17'h0, {48{_GEN_4}} ^ {24'h0, ~_GEN_2, x[22:0]} * {24'h0, ~_GEN_3, y[22:0]}};
-  wire [64:0] _GEN_7 = _GEN_5[6] ? {_GEN_6[0], 64'h0} : _GEN_6;
-  wire [48:0] _GEN_8 = _GEN_5[5] ? {_GEN_7[32:0], 16'h0} : _GEN_7[64:16];
-  wire [32:0] _GEN_9 = _GEN_5[4] ? _GEN_8[32:0] : _GEN_8[48:16];
-  wire [24:0] _GEN_10 = _GEN_5[3] ? _GEN_9[24:0] : _GEN_9[32:8];
-  wire [20:0] _GEN_11 = _GEN_5[2] ? _GEN_10[20:0] : _GEN_10[24:4];
-  wire [18:0] _GEN_12 = _GEN_5[1] ? _GEN_11[18:0] : _GEN_11[20:2];
-  wire [17:0] _GEN_13 = _GEN_5[8] ? 18'h0 : _GEN_5[0] ? _GEN_12[17:0] : _GEN_12[18:1];
+  reg  [13:0] _GEN;
+  reg         _GEN_0;
+  wire        _GEN_1 = x[30:23] == 8'h0;
+  wire        _GEN_2 = y[30:23] == 8'h0;
+  wire        _GEN_3 = x[31] ^ y[31];
+  wire [8:0]  _GEN_4 =
+    {1'h0, _GEN_1 ? 8'h1 : x[30:23]} + {1'h0, _GEN_2 ? 8'h1 : y[30:23]} - 9'hF7;
+  wire [59:0] _GEN_5 =
+    _GEN_4[6] | _GEN_4[7] | _GEN_4[8]
+      ? 60'h0
+      : {12'h0, {48{_GEN_3}} ^ {24'h0, ~_GEN_1, x[22:0]} * {24'h0, ~_GEN_2, y[22:0]}};
+  wire [43:0] _GEN_6 = _GEN_4[5] ? {_GEN_5[27:0], 16'h0} : _GEN_5[59:16];
+  wire [27:0] _GEN_7 = _GEN_4[4] ? _GEN_6[27:0] : _GEN_6[43:16];
+  wire [19:0] _GEN_8 = _GEN_4[3] ? _GEN_7[19:0] : _GEN_7[27:8];
+  wire [15:0] _GEN_9 = _GEN_4[2] ? _GEN_8[15:0] : _GEN_8[19:4];
+  wire [13:0] _GEN_10 = _GEN_4[1] ? _GEN_9[13:0] : _GEN_9[15:2];
   always_ff @(posedge clk) begin
     if (reset)
-      _GEN_1 <= 1'h0;
+      _GEN_0 <= 1'h0;
     else
-      _GEN_1 <= $signed(_GEN_5) > 9'shC | (&(x[30:23])) | (&(y[30:23])) | _GEN_1;
+      _GEN_0 <= $signed(_GEN_4) > 9'shA | (&(x[30:23])) | (&(y[30:23])) | _GEN_0;
   end // always_ff @(posedge)
   always_ff @(posedge clk) begin
     if (reset)
-      _GEN_0 <= 17'h0;
+      _GEN <= 14'h0;
     else
-      _GEN_0 <= {1'h0, _GEN_0[15:0]} + {1'h0, _GEN_13[15:0]} + {16'h0, _GEN_4};
+      _GEN <=
+        {1'h0, _GEN[12:0]}
+        + {1'h0, _GEN_4[8] ? 13'h0 : _GEN_4[0] ? _GEN_10[12:0] : _GEN_10[13:1]}
+        + {13'h0, _GEN_3};
   end // always_ff @(posedge)
-  always_ff @(posedge clk) begin
-    if (reset)
-      _GEN <= 3'h0;
-    else
-      _GEN <= {1'h0, _GEN[1:0]} + {1'h0, _GEN_13[17:16]} + {2'h0, _GEN_0[16]};
-  end // always_ff @(posedge)
-  wire [17:0] _GEN_14 = {_GEN[1:0], _GEN_0[15:0]} + {8'h0, _GEN_0[16], 9'h0};
-  wire        _GEN_15 = _GEN_14 == 18'h0;
-  wire [17:0] _GEN_16 = _GEN_14[17] ? ~_GEN_14 + 18'h1 : _GEN_14;
-  wire        _GEN_17 = _GEN_16[17:2] == 16'h0;
-  wire [14:0] _GEN_18 = _GEN_17 ? {_GEN_16[1:0], 13'h0} : _GEN_16[17:3];
-  wire        _GEN_19 = _GEN_18[14:7] == 8'h0;
-  wire [6:0]  _GEN_20 = _GEN_19 ? _GEN_18[6:0] : _GEN_18[14:8];
-  wire        _GEN_21 = _GEN_20[6:3] == 4'h0;
-  wire [2:0]  _GEN_22 = _GEN_21 ? _GEN_20[2:0] : _GEN_20[6:4];
-  wire        _GEN_23 = _GEN_22[2:1] == 2'h0;
-  wire        _GEN_24 = ~(_GEN_23 ? _GEN_22[0] : _GEN_22[2]);
-  wire [16:0] _GEN_25 = _GEN_17 ? {_GEN_16[0], 16'h0} : _GEN_16[16:0];
-  wire [16:0] _GEN_26 = _GEN_19 ? {_GEN_25[8:0], 8'h0} : _GEN_25;
-  wire [16:0] _GEN_27 = _GEN_21 ? {_GEN_26[12:0], 4'h0} : _GEN_26;
-  wire [16:0] _GEN_28 = _GEN_23 ? {_GEN_27[14:0], 2'h0} : _GEN_27;
-  wire [9:0]  _GEN_29 =
-    10'hB - {5'h0, _GEN_17, _GEN_19, _GEN_21, _GEN_23, _GEN_24} + 10'h7F;
-  wire        _GEN_30 = $signed(_GEN_29) < 10'sh1;
-  wire        _GEN_31 = $signed(_GEN_29) > 10'shFE;
+  wire        _GEN_11 = _GEN[12:0] == 13'h0;
+  wire [12:0] _GEN_12 = _GEN[12] ? ~(_GEN[12:0]) + 13'h1 : _GEN[12:0];
+  wire        _GEN_13 = _GEN_12[12:5] == 8'h0;
+  wire [6:0]  _GEN_14 = _GEN_13 ? {_GEN_12[4:0], 2'h0} : _GEN_12[12:6];
+  wire        _GEN_15 = _GEN_14[6:3] == 4'h0;
+  wire [2:0]  _GEN_16 = _GEN_15 ? _GEN_14[2:0] : _GEN_14[6:4];
+  wire        _GEN_17 = _GEN_16[2:1] == 2'h0;
+  wire        _GEN_18 = ~(_GEN_17 ? _GEN_16[0] : _GEN_16[2]);
+  wire [11:0] _GEN_19 = _GEN_13 ? {_GEN_12[3:0], 8'h0} : _GEN_12[11:0];
+  wire [11:0] _GEN_20 = _GEN_15 ? {_GEN_19[7:0], 4'h0} : _GEN_19;
+  wire [11:0] _GEN_21 = _GEN_17 ? {_GEN_20[9:0], 2'h0} : _GEN_20;
+  wire [9:0]  _GEN_22 = 10'h6 - {6'h0, _GEN_13, _GEN_15, _GEN_17, _GEN_18} + 10'h7F;
+  wire        _GEN_23 = $signed(_GEN_22) < 10'sh1;
+  wire        _GEN_24 = $signed(_GEN_22) > 10'shFE;
   assign r =
-    _GEN_1
+    _GEN_0
       ? 32'h7FC00000
-      : {_GEN_14[17],
-         _GEN_31 ? 8'hFF : _GEN_30 | _GEN_15 ? 8'h0 : _GEN_29[7:0],
-         _GEN_30 | _GEN_15 | _GEN_31
+      : {_GEN[12],
+         _GEN_24 ? 8'hFF : _GEN_23 | _GEN_11 ? 8'h0 : _GEN_22[7:0],
+         _GEN_23 | _GEN_11 | _GEN_24
            ? 23'h0
-           : {_GEN_24 ? {_GEN_28[15:0], 1'h0} : _GEN_28, 6'h0}};
+           : {_GEN_18 ? {_GEN_21[10:0], 1'h0} : _GEN_21, 11'h0}};
 endmodule
 

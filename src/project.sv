@@ -20,21 +20,21 @@ module tt_um_lledoux_s3fdp_seqcomb (
   localparam logic [1:0] ST_RUN  = 2'd1;
   localparam logic [1:0] ST_OUT  = 2'd2;
 
-  localparam logic [5:0] FRAME_LAST = 6'd35;
+  localparam logic [4:0] FRAME_LAST = 5'd19;
   localparam logic [2:0] RUN_LATENCY_CYCLES = 3'd6;
 
   logic [1:0] state;
-  logic [5:0] load_idx;
+  logic [4:0] load_idx;
   logic [2:0] run_count;
   logic [1:0] out_idx;
 
-  logic [31:0] a_words [0:3];
-  logic [31:0] b_words [0:3];
+  logic [31:0] a_words [0:1];
+  logic [31:0] b_words [0:1];
   logic [31:0] c0_word;
   logic [31:0] result_word;
 
-  logic [3:0][31:0] core_a;
-  logic [3:0][31:0] core_b;
+  logic [1:0][31:0] core_a;
+  logic [1:0][31:0] core_b;
   logic [1:0][31:0] core_c;
   logic core_reset;
   logic [31:0] core_r;
@@ -42,12 +42,8 @@ module tt_um_lledoux_s3fdp_seqcomb (
   always @(*) begin
     core_a[0] = a_words[0];
     core_a[1] = a_words[1];
-    core_a[2] = a_words[2];
-    core_a[3] = a_words[3];
     core_b[0] = b_words[0];
     core_b[1] = b_words[1];
-    core_b[2] = b_words[2];
-    core_b[3] = b_words[3];
     core_c[0] = c0_word;
     core_c[1] = 32'h00000000;
   end
@@ -72,54 +68,34 @@ module tt_um_lledoux_s3fdp_seqcomb (
       out_idx <= '0;
       a_words[0] <= '0;
       a_words[1] <= '0;
-      a_words[2] <= '0;
-      a_words[3] <= '0;
       b_words[0] <= '0;
       b_words[1] <= '0;
-      b_words[2] <= '0;
-      b_words[3] <= '0;
       c0_word <= '0;
       result_word <= '0;
     end else if (ena) begin
       case (state)
         ST_LOAD: begin
           case (load_idx)
-            6'd0:  a_words[0][7:0]   <= ui_in;
-            6'd1:  a_words[0][15:8]  <= ui_in;
-            6'd2:  a_words[0][23:16] <= ui_in;
-            6'd3:  a_words[0][31:24] <= ui_in;
-            6'd4:  a_words[1][7:0]   <= ui_in;
-            6'd5:  a_words[1][15:8]  <= ui_in;
-            6'd6:  a_words[1][23:16] <= ui_in;
-            6'd7:  a_words[1][31:24] <= ui_in;
-            6'd8:  a_words[2][7:0]   <= ui_in;
-            6'd9:  a_words[2][15:8]  <= ui_in;
-            6'd10: a_words[2][23:16] <= ui_in;
-            6'd11: a_words[2][31:24] <= ui_in;
-            6'd12: a_words[3][7:0]   <= ui_in;
-            6'd13: a_words[3][15:8]  <= ui_in;
-            6'd14: a_words[3][23:16] <= ui_in;
-            6'd15: a_words[3][31:24] <= ui_in;
-            6'd16: b_words[0][7:0]   <= ui_in;
-            6'd17: b_words[0][15:8]  <= ui_in;
-            6'd18: b_words[0][23:16] <= ui_in;
-            6'd19: b_words[0][31:24] <= ui_in;
-            6'd20: b_words[1][7:0]   <= ui_in;
-            6'd21: b_words[1][15:8]  <= ui_in;
-            6'd22: b_words[1][23:16] <= ui_in;
-            6'd23: b_words[1][31:24] <= ui_in;
-            6'd24: b_words[2][7:0]   <= ui_in;
-            6'd25: b_words[2][15:8]  <= ui_in;
-            6'd26: b_words[2][23:16] <= ui_in;
-            6'd27: b_words[2][31:24] <= ui_in;
-            6'd28: b_words[3][7:0]   <= ui_in;
-            6'd29: b_words[3][15:8]  <= ui_in;
-            6'd30: b_words[3][23:16] <= ui_in;
-            6'd31: b_words[3][31:24] <= ui_in;
-            6'd32: c0_word[7:0]      <= ui_in;
-            6'd33: c0_word[15:8]     <= ui_in;
-            6'd34: c0_word[23:16]    <= ui_in;
-            6'd35: c0_word[31:24]    <= ui_in;
+            5'd0:  a_words[0][7:0]   <= ui_in;
+            5'd1:  a_words[0][15:8]  <= ui_in;
+            5'd2:  a_words[0][23:16] <= ui_in;
+            5'd3:  a_words[0][31:24] <= ui_in;
+            5'd4:  a_words[1][7:0]   <= ui_in;
+            5'd5:  a_words[1][15:8]  <= ui_in;
+            5'd6:  a_words[1][23:16] <= ui_in;
+            5'd7:  a_words[1][31:24] <= ui_in;
+            5'd8:  b_words[0][7:0]   <= ui_in;
+            5'd9:  b_words[0][15:8]  <= ui_in;
+            5'd10: b_words[0][23:16] <= ui_in;
+            5'd11: b_words[0][31:24] <= ui_in;
+            5'd12: b_words[1][7:0]   <= ui_in;
+            5'd13: b_words[1][15:8]  <= ui_in;
+            5'd14: b_words[1][23:16] <= ui_in;
+            5'd15: b_words[1][31:24] <= ui_in;
+            5'd16: c0_word[7:0]      <= ui_in;
+            5'd17: c0_word[15:8]     <= ui_in;
+            5'd18: c0_word[23:16]    <= ui_in;
+            5'd19: c0_word[31:24]    <= ui_in;
             default: ;
           endcase
 
@@ -127,7 +103,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
             state <= ST_RUN;
             run_count <= '0;
           end else begin
-            load_idx <= load_idx + 6'd1;
+            load_idx <= load_idx + 5'd1;
           end
         end
 
@@ -147,12 +123,8 @@ module tt_um_lledoux_s3fdp_seqcomb (
             load_idx <= '0;
             a_words[0] <= '0;
             a_words[1] <= '0;
-            a_words[2] <= '0;
-            a_words[3] <= '0;
             b_words[0] <= '0;
             b_words[1] <= '0;
-            b_words[2] <= '0;
-            b_words[3] <= '0;
             c0_word <= '0;
           end else begin
             out_idx <= out_idx + 2'd1;

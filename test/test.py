@@ -5,15 +5,15 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
-FRAME_BYTES = 36
+FRAME_BYTES = 20
 RUN_CYCLES = 6
 OUT_BYTES = 4
 COMPUTE_SLOT_BYTES = RUN_CYCLES + OUT_BYTES
 
 # Simple dot product sanity vector:
-# [1,0,0,0] dot [1,0,0,0] + c0(=0) = 1.0
-A_WORDS = [0x3F800000, 0x00000000, 0x00000000, 0x00000000]
-B_WORDS = [0x3F800000, 0x00000000, 0x00000000, 0x00000000]
+# [1,0] dot [1,0] + c0(=0) = 1.0
+A_WORDS = [0x3F800000, 0x00000000]
+B_WORDS = [0x3F800000, 0x00000000]
 C0_WORD = 0x00000000
 EXPECTED_WORD = 0x3F800000
 
@@ -87,7 +87,7 @@ async def test_streaming_s3fdp_wrapper(dut):
     samples = await stream_and_collect_words(dut, stream)
 
     # Nominal output-word start index relative to frame start:
-    # 36 load cycles + 6 run cycles - 1.
+    # 20 load cycles + 6 run cycles - 1.
     nominal_rel_start = FRAME_BYTES + RUN_CYCLES - 1
     frame0_start = 0
     frame1_start = FRAME_BYTES + COMPUTE_SLOT_BYTES
