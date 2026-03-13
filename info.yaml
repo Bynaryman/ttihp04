@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        "S3FDP Seq+Comb Stream Core"      # Project title
+  title:        "Pattern-Guided Arithmetic Optimizations with MLIR"      # Project title
   author:       "L. Ledoux"      # Your name
   discord:      "binaryman"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "Streaming byte-fed S3FDP seq+comb accumulator generated from MLIR for-loop."
