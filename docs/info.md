@@ -7,9 +7,9 @@ The flow detects a loop pattern in MLIR (`scf.for` + `memref.load/store` + `arit
 Canonical loop shape:
 
 ```mlir
-scf.for %k = %c0 to %c4 step %c1 {
-  %x = memref.load %a[%k] : memref<4xf32>
-  %y = memref.load %b[%k] : memref<4xf32>
+scf.for %k = %c0 to %c2 step %c1 {
+  %x = memref.load %a[%k] : memref<2xf32>
+  %y = memref.load %b[%k] : memref<2xf32>
   %acc = memref.load %c[%c0] : memref<2xf32>
   %m = arith.mulf %x, %y : f32
   %s = arith.addf %acc, %m : f32
@@ -27,8 +27,8 @@ S3FDP is used as a truncated Kulisch-like fixed-point accumulation strategy:
 
 Specialization used in this project:
 
-- `ovf=5`
-- `msb=6`
+- `ovf=2`
+- `msb=4`
 - `lsb=-6`
 - `chunk_size=16`
 
@@ -114,19 +114,19 @@ sv.alwaysff(posedge %clk_0) {
 
 Input stream on `ui_in[7:0]`:
 
-- 36-byte frame, little-endian
-- `a[0..3]` IEEE754 `f32` (16 bytes)
-- `b[0..3]` IEEE754 `f32` (16 bytes)
+- 20-byte frame, little-endian
+- `a[0..1]` IEEE754 `f32` (8 bytes)
+- `b[0..1]` IEEE754 `f32` (8 bytes)
 - `c0` IEEE754 `f32` seed (4 bytes)
 
 Execution:
 
 - hold core reset during load,
-- release reset after byte 36,
-- wait 6 cycles,
+- release reset after byte 20,
+- wait 3 cycles,
 - output one 32-bit result on `uo_out[7:0]` as 4 little-endian bytes.
 
-Frame slot: 46 cycles (`36 load + 6 run + 4 output`).
+Frame slot: 27 cycles (`20 load + 3 run + 4 output`).
 
 `uio` pins are unused.
 

@@ -2,51 +2,70 @@
 
 # Pattern-Guided Arithmetic Optimizations with MLIR & TinyTapeout (`ttsky26a`)
 
-## At a glance
+This repository is a TinyTapeout artifact for a simple but important compiler idea: keep arithmetic decisions visible until they become hardware, then validate that path on a small, real design.
 
-- Top module: `tt_um_lledoux_s3fdp_seqcomb`
-- Target platform: TinyTapeout (Sky130)
-- Frontend IR: MLIR (`scf` + `memref` + `arith`)
-- Backend lowering: Emeraude passes + FloPoCo2 + CIRCT SV export
-- Specialized arithmetic: S3FDP (`ovf=5, msb=6, lsb=-6, chunk_size=16`)
+The design is `tt_um_lledoux_s3fdp_seqcomb`, a streaming wrapper around a generated floating-point accumulation core.
+It targets open-source silicon through TinyTapeout on Sky130.
 
-## Overview
+The repository is also a compact, reproducible view of a line of work spanning several levels of the hardware/software stack: arithmetic-oriented [MLIR](https://mlir.llvm.org/) design (a multi-level compiler IR), lowering passes in `emeraude-mlir` (my arithmetic-oriented MLIR compiler repository, not yet open), supporting [CIRCT](https://github.com/llvm/circt) contributions (hardware-oriented compiler infrastructure built on MLIR), and my [FloPoCo2](https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux) refactoring work toward IR generation for arithmetic circuits, needed to keep floating-point datapaths compiler-visible instead of opaque.
 
-This repository is an artifact for a compiler-to-hardware specialization method: recognize a structured floating-point accumulation loop in MLIR and lower it to a dedicated arithmetic circuit instead of a fully generic IEEE datapath.
+## Motivation
 
-Methodologically, the flow applies three steps:
+[MLIR](https://mlir.llvm.org/) and [CIRCT](https://github.com/llvm/circt) already provide a strong path from high-level programs to structural hardware, especially for control flow, memory, and integer-style datapaths. The weak point is floating-point realization near the circuit boundary. At exactly the stage where ASIC and FPGA flows want explicit wires, operators, and registers, floating-point regions often become opaque, remain trapped in HLS-style abstractions, or are handed off to external generators as black-box blocks.
 
-1. Detect loop-carried MAC structure in MLIR (`scf.for`, `memref.load/store`, `arith.mulf/addf`).
-2. Replace the arithmetic with a specialized S3FDP accumulator (truncated Kulisch-like accumulation).
-3. Lower to seq/comb hardware and SystemVerilog for TinyTapeout integration.
+That loss of visibility matters because this is where the interesting tradeoffs become concrete: area, latency, rounding points, exception handling, and opportunities for fusion or specialization. In other words, floating-point arithmetic is still "just hardware" at this level, but current compiler flows do not always expose it that way.
 
-The focus is not broad operator coverage; it is a constrained but reproducible path for a common kernel class (dot-product style accumulation), with explicit intermediate IR artifacts and generated RTL.
+This repository focuses on that missing step. Concretely, it shows how a small floating-point kernel can be lowered into explicit compiler-visible `comb`/`hw`/`seq` structure before final RTL export, so arithmetic remains available to the compiler as something that can still be inspected, transformed, and specialized.
 
-## Arithmetic Model
+The motivation is therefore practical. The artifact is meant to show the continuity between several pieces of work that are often separated in practice: arithmetic-oriented IR choices, lowering passes, structural compiler cleanup near the CIRCT boundary, and arithmetic-generator integration. The value of the example is not only that it produces a small chip, but that the intermediate transformations remain visible and reproducible.
 
-In this flow, S3FDP is used as a truncated Kulisch-like fixed-point accumulation strategy:
+In this flow, CIRCT utilities such as `map-arith-to-comb` are useful, but they are not a complete floating-point structuralization path for the kernels targeted here. This artifact documents the additional lowering step used to close that gap on a compact example.
 
-- products are formed from input mantissas/exponents,
-- accumulation happens in a constrained fixed-point-like internal format,
-- final result is re-encoded as `f32`.
+## What Is Implemented Here
 
-This implementation uses:
+This repository brings together work I contributed at several layers:
 
-- `ovf=5`
-- `msb=6`
-- `lsb=-6`
-- `chunk_size=16`
+- arithmetic-aware lowering in `emeraude-mlir`, my current arithmetic-oriented MLIR compiler repository, including the path used here to move from `arith`/`scf`/`memref` programs to explicit hardware-oriented structure
+- arithmetic IR work around multi-level compilation, real-number expressions, fixed-point or specialized accumulation, and compiler-visible numeric choices
+- supporting [CIRCT](https://github.com/llvm/circt)-side transformations that make the later structural lowering stages cleaner for this kind of flow
+- FloPoCo2 refactoring work for IR generation, exposed in [this development branch](https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux), that exports floating-point hardware as an internal combinational graph rather than stopping at standalone HDL emission
+- TinyTapeout integration, wrapper design, and test scaffolding that tie those pieces into a reproducible open artifact
 
-These parameters define the internal truncation and dynamic range budget of the specialized accumulator instance (`s3fdp_accum_core_wE8_wF23_cs16`).
+## FloPoCo Integration In This Flow
 
-## Compiler Pattern and Workload Context
+In this repository, FloPoCo is not used only as an external generator. The relevant piece is my FloPoCo2 refactoring work toward IR generation, available in [this development branch](https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux), which exposes arithmetic as an internal combinational graph (CombAST-style) that compiler passes can import and lower instead of only emitting standalone HDL.
 
-The input loop that drives subsequent transformations is:
+This makes the generated datapath part of the compiler pipeline itself. In practice, it keeps floating-point structure visible across lowering stages and allows it to interact with the MLIR/CIRCT transformations used in this artifact.
+
+Active branch used by this work:
+
+- FloPoCo2 development branch carrying this IR-generation refactoring: https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux
+
+The concrete flow in this repository combines:
+
+- [MLIR](https://mlir.llvm.org/) for source pattern capture
+- `emeraude-mlir` (my current repository, not yet open) for lowering and arithmetic specialization
+- [FloPoCo2 development branch `origin/dev/lledoux`](https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux) for arithmetic generation and IR export
+- [CIRCT](https://github.com/llvm/circt) for structural lowering and SystemVerilog export
+
+## From Llama context to this tiny chip
+
+The kernel used here is intentionally small, but it comes from the same family of Python/LLM workloads discussed in the companion material: SwiGLU-style and matmul-dominated regions where multiply-add structure is abundant and arithmetic lowering choices matter.
+
+One lowered MLIR stage from that broader LLaMA-derived path is shown below.
+
+![LLaMA-derived MLIR lowering context (from codez examples)](docs/llama_mlir_lowering_context.png)
+
+Companion context figure:
+
+![Llama-to-hardware context](docs/llama.png)
+
+In this artifact, we keep one compact loop-accum kernel so it fits TinyTapeout while still showing the full compiler path.
 
 ```mlir
-scf.for %k = %c0 to %c4 step %c1 {
-  %x = memref.load %a[%k] : memref<4xf32>
-  %y = memref.load %b[%k] : memref<4xf32>
+scf.for %k = %c0 to %c2 step %c1 {
+  %x = memref.load %a[%k] : memref<2xf32>
+  %y = memref.load %b[%k] : memref<2xf32>
   %acc = memref.load %c[%c0] : memref<2xf32>
   %m = arith.mulf %x, %y : f32
   %s = arith.addf %acc, %m : f32
@@ -56,226 +75,49 @@ scf.for %k = %c0 to %c4 step %c1 {
 
 Source: `flow/mlir/s3fdp_loop_accum.mlir`
 
-This is a minimal dot-product style kernel.
-The same loop shape appears as a building block in higher-level programs, including tiled matrix multiplication pipelines generated from ML frameworks such as PyTorch frontends.
-This repository keeps a compact deterministic kernel to make it fit in some TinyTapeout tiles.
+## Arithmetic specialization and comb stage
 
-## Scalability: Llama/Python/torch -> GDS
+Specialization is configured in `scripts/generate_s3fdp_core.sh`:
 
-A full end-to-end path has been tested on llama-style subblocks.
-The hardware kernel here is the small fixed-size building block that appears repeatedly inside larger tensor programs.
+- `s3fdp.ovf=2`
+- `s3fdp.msb=4`
+- `s3fdp.lsb=-6`
+- `s3fdp.chunk_size=16`
 
-```python
-class LlamaFfnSublayer(nn.Module):
-    """Llama FFN sublayer using SwiGLU (SiLU-gated linear unit)."""
+A representative comb-level view produced in the flow is shown below:
 
-    def __init__(self, dim: int = 512, hidden_dim: int | None = None, multiple_of: int = 256):
-        super().__init__()
-        if hidden_dim is None:
-            hidden_dim = 4 * dim
-            hidden_dim = int(2 * hidden_dim / 3)
-            hidden_dim = multiple_of * ((hidden_dim + multiple_of - 1) // multiple_of)
-        self.w_gate = nn.Linear(dim, hidden_dim, bias=False)
-        self.w_up = nn.Linear(dim, hidden_dim, bias=False)
-        self.w_down = nn.Linear(hidden_dim, dim, bias=False)
+![MLIR to SystemVerilog / comb-focused view (from codez examples)](docs/mlir_to_systemverilog_comb.png)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        gate = F.silu(self.w_gate(x))
-        up = self.w_up(x)
-        return self.w_down(gate * up)
-```
+You can inspect the exact IR stages in:
 
-High-level MLIR excerpt from this path:
+- `generated/ir-stages/20-flopoco-comb.mlir`
+- `generated/ir-stages/60-hw-aggregate.mlir`
+- `generated/ir-stages/90-hw-to-sv.mlir`
 
-```mlir
-...
-%8 = linalg.generic
-  {ins(%7: tensor<1x2x16xf32>) outs(%5: tensor<1x2x16xf32>) {
-    %19 = arith.negf %in : f32
-    %20 = math.exp %19 : f32
-    %21 = arith.addf %20, %cst_1 : f32
-    %22 = arith.divf %cst_1, %21 : f32
-    linalg.yield %22 : f32
-  }} -> tensor<1x2x16xf32>
+Here CIRCT serves as the structural backend, while the floating-point path is made explicit through `flopoco-arith-to-comb`, the surrounding arithmetic-specialization work in `emeraude-mlir`, and the FloPoCo2 IR-generation refactoring above.
 
-%9 = linalg.generic
-  {ins(%8, %7: tensor<1x2x16xf32>, tensor<1x2x16xf32>)
-   outs(%5: tensor<1x2x16xf32>)} {
-    %19 = arith.mulf %in, %in_7 : f32
-    linalg.yield %19 : f32
-  } -> tensor<1x2x16xf32>
-...
-```
+## TinyTapeout wrapper behavior
 
-![Llama subblock flow figure](docs/llama.png)
+Top module: `tt_um_lledoux_s3fdp_seqcomb`
 
-## What is this Figure ?
+Protocol:
 
-A bit of art-chitecture does not hurt: 
+- input frame: 20 bytes (`a[2]`, `b[2]`, `c0`, little-endian)
+- run latency: 3 cycles
+- output: one 32-bit result over 4 bytes
+- slot cadence: `20 + 3 + 4 = 27` cycles
 
-![S3FDP seq+comb flow figure](docs/art.jpg)
+Waveform snapshot:
 
-## Reproducible Generation Flow
+![Streaming waveform](docs/waves.png)
 
-Run:
+## Reproduce
+
+Generate core + IR artifacts:
 
 ```sh
 ./scripts/generate_s3fdp_core.sh
 ```
-
-Tool locations are environment-driven:
-
-- `EMERAUDE_MLIR_OPT` and `CIRCT_OPT` from env, if set.
-- Otherwise, binaries are resolved from `PATH` (`emeraude-mlir-opt`, `circt-opt`).
-- Optional root env vars are supported: `EMERAUDE_REPO`, `CIRCT_BIN_DIR`.
-
-Example:
-
-```sh
-EMERAUDE_MLIR_OPT="$HOME/tools/emeraude-mlir/build/bin/emeraude-mlir-opt" \
-CIRCT_OPT="$HOME/tools/circt/build/bin/circt-opt" \
-./scripts/generate_s3fdp_core.sh
-```
-
-Additional overrides:
-`INPUT_MLIR`, `ARTIFACT_DIR`, `CORE_SV_OUT`, `WRAPPER_SV_IN`, `PROJECT_V_OUT`.
-
-## Internal IR Snapshots
-
-Comb-specialized stage (`generated/ir-stages/20-flopoco-comb.mlir`):
-
-```mlir
-func.func @fpmult_loop_muladd_s3fdp(%arg0: i1, %arg1: i1,
-    %arg2: memref<4xi32>, %arg3: memref<4xi32>, %arg4: memref<2xi32>) -> i32 {
-  %c0 = arith.constant 0 : index
-  %c1 = arith.constant 1 : index
-  %c4 = arith.constant 4 : index
-  scf.for %arg5 = %c0 to %c4 step %c1 {
-    %1 = memref.load %arg2[%arg5] : memref<4xi32>
-    %2 = memref.load %arg3[%arg5] : memref<4xi32>
-    %3 = seq.to_clock %arg0
-%s3fdp_accum.r = hw.instance "s3fdp_accum" @s3fdp_accum_core_wE8_wF23_cs16(
-  clk: %3: !seq.clock, reset: %arg1: i1, x: %1: i32, y: %2: i32
-) -> (r: i32)
-    memref.store %s3fdp_accum.r, %arg4[%c0] : memref<2xi32>
-  }
-  %0 = memref.load %arg4[%c0] : memref<2xi32>
-  return %0 : i32
-}
-```
-
-Seq/HW aggregate stage (`generated/ir-stages/60-hw-aggregate.mlir`):
-
-```mlir
-%0 = hw.bitcast %b : (!hw.array<4xi32>) -> i128
-%1 = hw.bitcast %a : (!hw.array<4xi32>) -> i128
-%c_mem = seq.hlmem @c_mem %clk_0, %reset : <2xi32>
-%2 = seq.compreg %28, %clk_0 reset %reset, %c0_i32 : i32
-%3 = comb.icmp eq %2, %c0_i32 : i32
-...
-%26 = seq.to_clock %clk
-%27 = seq.clock_gate %26, %3
-%s3fdp_accum.r = hw.instance "s3fdp_accum" @s3fdp_accum_core_wE8_wF23_cs16(
-  clk: %27: !seq.clock, reset: %reset: i1, x: %18: i32, y: %25: i32
-) -> (r: i32)
-seq.write %c_mem[%false] %s3fdp_accum.r wren %3 {latency = 1 : i64} : !seq.hlmem<2xi32>
-%c_mem_rdata = seq.read %c_mem[%false] {latency = 0 : i64} : !seq.hlmem<2xi32>
-hw.output %c_mem_rdata : i32
-```
-
-SV-lowered stage (`generated/ir-stages/90-hw-to-sv.mlir`):
-
-```mlir
-%c_mem = sv.reg : !hw.inout<uarray<2xi32>>
-sv.alwaysff(posedge %clk_0) {
-  sv.if %4 {
-    %33 = sv.array_index_inout %c_mem[%false] : !hw.inout<uarray<2xi32>>, i1
-    sv.passign %33, %s3fdp_accum.r : i32
-  }
-}(syncreset : posedge %reset) {
-}
-%2 = sv.reg : !hw.inout<i32>
-%3 = sv.read_inout %2 : !hw.inout<i32>
-sv.alwaysff(posedge %clk_0) {
-  sv.passign %2, %30 : i32
-}(syncreset : posedge %reset) {
-  sv.passign %2, %c0_i32 : i32
-}
-```
-
-Generated SystemVerilog core header (`src/generated/s3fdp_core.sv`):
-
-```systemverilog
-module fpmult_loop_muladd_s3fdp(
-  input              clk,
-                     reset,
-  input  [3:0][31:0] a,
-                     b,
-  input  [1:0][31:0] c,
-  input              clk_0,
-  output [31:0]      r
-);
-```
-
-## Pass Chain
-
-1. `memref-return-to-out-param`
-2. `flatten-memref`, `flatten-memref-args`, `flatten-memref-globals`, `lower-memref-view-to-linear`
-3. `flopoco-arith-to-comb` with:
-   `lowering-mode=specialized target-frequency=5e7 specializations=enable=s3fdp,s3fdp.ovf=5,s3fdp.msb=6,s3fdp.lsb=-6,s3fdp.chunk_size=16`
-4. `func-to-hw-module`, `lower-scf-to-seq-stream`, `realize-memref-as-seq-hw`, `lower-scf-if-to-seq-enable`, `convert-index-to-uint`
-5. CIRCT:
-   `map-arith-to-comb`, `hw-aggregate-to-comb`, `lower-seq-hlmem`, `lower-seq-to-sv`, `lower-hw-to-sv`, `--export-verilog`
-
-## Artifact Hierarchy
-
-```text
-.
-|-- flow/
-|   `-- mlir/
-|       `-- s3fdp_loop_accum.mlir
-|-- generated/
-|   `-- ir-stages/
-|       |-- 10-input.mlir
-|       |-- 20-flopoco-comb.mlir
-|       |-- 40-seq.mlir
-|       |-- 90-hw-to-sv.mlir
-|       `-- 99-export.mlir
-|-- src/
-|   |-- generated/
-|   |   `-- s3fdp_core.sv
-|   |-- project.sv
-|   `-- project.v
-|-- scripts/
-|   `-- generate_s3fdp_core.sh
-|-- docs/
-|   |-- info.md
-|   |-- llama.png
-|   `-- art.jpg
-`-- test/
-    |-- test.py
-    `-- tb.v
-```
-
-## Wrapper Protocol (TinyTapeout)
-
-Input stream on `ui_in[7:0]`:
-
-- 36-byte frame, little-endian
-- `a[4]` (`f32`) = 16 bytes
-- `b[4]` (`f32`) = 16 bytes
-- `c0` (`f32`) = 4 bytes
-
-Execution schedule:
-
-- hold core reset while loading bytes,
-- release reset after byte 36,
-- wait 6 cycles,
-- emit result `r` as 4 little-endian bytes on `uo_out[7:0]`.
-
-Frame cadence: `36 + 6 + 4 = 46` cycles.
-
-## Tests
 
 Run RTL test:
 
@@ -283,18 +125,90 @@ Run RTL test:
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r test/requirements.txt
-cd test
-make clean
-make -B
+make -C test -B
 ```
 
-Waveform screenshot (byte stream load, compute latency, and byte-wise output):
+Test vector in `test/test.py`:
 
-![Waveform screenshot](docs/waves.png)
-
-Current cocotb check uses a simple deterministic vector:
-
-- `a=[1.0, 0, 0, 0]`
-- `b=[1.0, 0, 0, 0]`
+- `a=[1.0, 0]`
+- `b=[1.0, 0]`
 - `c0=0.0`
-- expected output word: `0x3F800000` (`1.0f`)
+- expected result `0x3F800000`
+
+## Related material
+
+- HAL profile: https://cv.hal.science/louis-ledoux
+- `Towards Optimized Arithmetic Circuits with MLIR` (HAL): https://hal.science/hal-05385229v1
+- `Towards Multi-Level Arithmetic Optimizations` (HAL): https://hal.science/hal-05063466v1
+- `Arithmetic Lowering with Emeraude-MLIR: Bridging Tensor and DSP Kernels to Silicon Datapaths` (HAL): https://hal.science/hal-05489427v1
+- `An Open-Source Framework for Efficient Numerically-Tailored Computations` (HAL): https://hal.science/hal-04277512v1
+- `LLMMMM: Large Language Models Matrix-Matrix Multiplications Characterization on Open Silicon` (HAL): https://hal.science/hal-04592229v1
+- PhD thesis, `Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs` (HAL): https://theses.hal.science/tel-04754167v3
+- FloPoCo2 development branch used in this flow, carrying the IR-generation refactoring: https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux
+- CIRCT contribution, `convert-index-to-uint` transform: https://github.com/llvm/circt/pull/9263
+- CIRCT contribution, multi-result `scf.index_switch` support: https://github.com/llvm/circt/pull/9245
+- CIRCT commit for `convert-index-to-uint`: https://github.com/llvm/circt/commit/ca026ed66c8f33d421467d80856d86c6bcefae27
+- CIRCT commit for multi-result `scf.index_switch`: https://github.com/llvm/circt/commit/fa7eb12bf52d4433bf372801a598ade775a9e16c
+- MLIR: https://mlir.llvm.org/
+- CIRCT: https://github.com/llvm/circt
+- TinyTapeout: https://tinytapeout.com/
+- FloPoCo main: https://gitlab.com/flopoco/flopoco
+- `emeraude-mlir`: my current repository, not yet open
+- This artifact repo: https://github.com/Bynaryman/ttsky26a
+
+## Cite This Work
+
+Selected references related to this repository:
+
+```bibtex
+@inproceedings{cochard2025multilevel,
+  author = {Pierre Cochard and Luc Forget and Florent de Dinechin and Louis Ledoux},
+  title = {Towards Multi-Level Arithmetic Optimizations},
+  booktitle = {EuroLLVM 2025},
+  address = {Berlin, Germany},
+  year = {2025},
+  url = {https://hal.science/hal-05063466v1},
+  note = {Poster}
+}
+
+@article{ledoux2025optimizedmlir,
+  author = {Louis Ledoux and Pierre Cochard and Florent de Dinechin},
+  title = {Towards Optimized Arithmetic Circuits with MLIR},
+  journal = {WiPiEC Journal: Works in Progress in Embedded Computing},
+  volume = {11},
+  number = {1},
+  year = {2025},
+  doi = {10.64552/wipiec.v11i1.90},
+  url = {https://hal.science/hal-05385229v1},
+  note = {Associated conference presentation at DSD 2025}
+}
+
+@misc{ledoux2026circtflopoco,
+  author = {Louis Ledoux and Pierre Cochard and Florent de Dinechin},
+  title = {Floating-Point Datapaths in CIRCT via FloPoCo AST Export and flopoco-arith-to-comb Lowering},
+  howpublished = {Poster presentation at the EuroLLVM Developers' Meeting 2026},
+  address = {Dublin, Ireland},
+  year = {2026}
+}
+
+@misc{ledoux2026emeraude,
+  author = {Louis Ledoux and Pierre Cochard and Florent de Dinechin},
+  title = {Arithmetic Lowering with Emeraude-MLIR: Bridging Tensor and DSP Kernels to Silicon Datapaths},
+  howpublished = {Presentation at the PEPR IA Embarqu{\'e}e Workshop},
+  address = {Aussois, France},
+  year = {2026},
+  url = {https://hal.science/hal-05489427v1}
+}
+
+@misc{ledoux2025holigrail,
+  author = {Louis Ledoux and Pierre Cochard},
+  title = {FloPoCo and MLIR: a Multi-Level Compilation Framework for Many Intents},
+  howpublished = {Holigrail Seminar, Sorbonne University},
+  address = {Paris, France},
+  year = {2025}
+}
+```
+
+## License
+
+Apache-2.0 (see `LICENSE`).
