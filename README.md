@@ -1,6 +1,6 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# Pattern-Guided Arithmetic Optimizations with MLIR & TinyTapeout (`ttsky26a`)
+# Pattern-Guided Arithmetic Optimizations with MLIR & TinyTapeout (`ttihp04`)
 
 This repository is a TinyTapeout artifact for a simple but important compiler idea: keep arithmetic decisions visible until they become hardware, then validate that path on a small, real design.
 
@@ -199,7 +199,7 @@ Test vector in `test/test.py`:
 - TinyTapeout: https://tinytapeout.com/
 - FloPoCo main: https://gitlab.com/flopoco/flopoco
 - `emeraude-mlir`: my current repository, not yet open
-- This artifact repo: https://github.com/Bynaryman/ttsky26a
+- This artifact repo: https://github.com/Bynaryman/ttihp04
 
 ## Cite This Work
 
