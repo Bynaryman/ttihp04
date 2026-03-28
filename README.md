@@ -64,12 +64,12 @@ In this artifact, we keep one compact loop-accum kernel so it fits TinyTapeout w
 
 ```mlir
 scf.for %k = %c0 to %c2 step %c1 {
-  %x = memref.load %a[%k] : memref<2xf32>
-  %y = memref.load %b[%k] : memref<2xf32>
-  %acc = memref.load %c[%c0] : memref<2xf32>
-  %m = arith.mulf %x, %y : f32
-  %s = arith.addf %acc, %m : f32
-  memref.store %s, %c[%c0] : memref<2xf32>
+  %x = memref.load %a[%k] : memref<2xbf16>
+  %y = memref.load %b[%k] : memref<2xbf16>
+  %acc = memref.load %c[%c0] : memref<2xbf16>
+  %m = arith.mulf %x, %y : bf16
+  %s = arith.addf %acc, %m : bf16
+  memref.store %s, %c[%c0] : memref<2xbf16>
 }
 ```
 
@@ -80,9 +80,11 @@ Source: `flow/mlir/s3fdp_loop_accum.mlir`
 Specialization is configured in `scripts/generate_s3fdp_core.sh`:
 
 - `s3fdp.ovf=4`
-- `s3fdp.msb=254`
-- `s3fdp.lsb=-298`
+- `s3fdp.msb=120`
+- `s3fdp.lsb=-133`
 - `s3fdp.chunk_size=16`
+- `s3fdp.we=8`
+- `s3fdp.wf=7`
 
 A representative comb-level view produced in the flow is shown below:
 
@@ -130,10 +132,10 @@ make -C test -B
 
 Test vector in `test/test.py`:
 
-- `a=[1.0, 0]`
-- `b=[1.0, 0]`
-- `c0=0.0`
-- expected result `0x3F800000`
+- `a=[bf16(1.0), 0]`
+- `b=[bf16(1.0), 0]`
+- `c0=0`
+- expected result `0x00003F80` (bf16 payload in low 16 bits)
 
 ## Related material
 

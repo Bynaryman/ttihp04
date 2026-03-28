@@ -13,12 +13,12 @@ COMPUTE_SLOT_BYTES = RUN_CYCLES + OUT_BYTES
 PIPELINE_FLUSH_BYTES = 64
 
 # Small-loop protocol payload: a[2], b[2], c0
-A_WORDS = [0x3F800000, 0x00000000]
-B_WORDS = [0x3F800000, 0x00000000]
+A_WORDS = [0x00003F80, 0x00000000]  # bf16(1.0) in low 16 bits
+B_WORDS = [0x00003F80, 0x00000000]  # bf16(1.0) in low 16 bits
 C0_WORD = 0x00000000
-# Current exact-kulisch profile emits quiet NaN for this canonical vector.
-# Allow override from environment for future profile sweeps.
-EXPECTED_WORD = int(os.getenv("EXPECTED_WORD_HEX", "7FC00000"), 16)
+# bf16 Kulisch profile should return bf16(1.0) in low 16 bits.
+# Allow override from environment for profile sweeps.
+EXPECTED_WORD = int(os.getenv("EXPECTED_WORD_HEX", "00003F80"), 16)
 
 
 def word_to_le_bytes(word: int) -> list[int]:

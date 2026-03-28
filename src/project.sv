@@ -14,6 +14,11 @@ module tt_um_lledoux_s3fdp_seqcomb (
     input  wire       ena,
     input  wire       clk,
     input  wire       rst_n
+`ifdef USE_POWER_PINS
+    ,
+    inout  wire       VPWR,
+    inout  wire       VGND
+`endif
 );
 
   localparam logic [1:0] ST_LOAD = 2'd0;
@@ -33,19 +38,19 @@ module tt_um_lledoux_s3fdp_seqcomb (
   logic [31:0] c0_word;
   logic [31:0] result_word;
 
-  logic [1:0][31:0] core_a;
-  logic [1:0][31:0] core_b;
-  logic [1:0][31:0] core_c;
+  logic [1:0][15:0] core_a;
+  logic [1:0][15:0] core_b;
+  logic [1:0][15:0] core_c;
   logic core_reset;
-  logic [31:0] core_r;
+  logic [15:0] core_r;
 
   always @(*) begin
-    core_a[0] = a_words[0];
-    core_a[1] = a_words[1];
-    core_b[0] = b_words[0];
-    core_b[1] = b_words[1];
-    core_c[0] = c0_word;
-    core_c[1] = 32'h00000000;
+    core_a[0] = a_words[0][15:0];
+    core_a[1] = a_words[1][15:0];
+    core_b[0] = b_words[0][15:0];
+    core_b[1] = b_words[1][15:0];
+    core_c[0] = c0_word[15:0];
+    core_c[1] = 16'h0000;
   end
 
   assign core_reset = (~rst_n) | (state == ST_LOAD);
@@ -109,7 +114,7 @@ module tt_um_lledoux_s3fdp_seqcomb (
 
         ST_RUN: begin
           if (run_count == (RUN_LATENCY_CYCLES - 3'd1)) begin
-            result_word <= core_r;
+            result_word <= {16'h0000, core_r};
             state <= ST_OUT;
             out_idx <= '0;
           end else begin
@@ -158,6 +163,10 @@ module tt_um_lledoux_s3fdp_seqcomb (
   assign uio_out = 8'h00;
   assign uio_oe  = 8'h00;
 
+`ifdef USE_POWER_PINS
+  wire _unused = &{uio_in, VPWR, VGND, 1'b0};
+`else
   wire _unused = &{uio_in, 1'b0};
+`endif
 
 endmodule
