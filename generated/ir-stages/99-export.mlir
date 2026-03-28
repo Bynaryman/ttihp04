@@ -88,26 +88,24 @@ module attributes {circt.loweringOptions = "locationInfoStyle=none"} {
     hw.output %41 : i32
   }
   hw.module @s3fdp_accum_core_wE8_wF23_cs16(in %clk : i1, in %reset : i1, in %x : i32, in %y : i32, out r : i32) {
-    %0 = sv.reg {hw.verilogName = "_GEN"} : !hw.inout<i14> 
+    %0 = sv.reg {hw.verilogName = "_GEN"} : !hw.inout<i17> 
     %1 = sv.reg {hw.verilogName = "_GEN_0"} : !hw.inout<i1> 
-    %c0_i12 = hw.constant 0 : i12
-    %c0_i60 = hw.constant 0 : i60
-    %c0_i16 = hw.constant 0 : i16
+    %c0_i15 = hw.constant 0 : i15
+    %c0_i63 = hw.constant 0 : i63
     %c2143289344_i32 = hw.constant 2143289344 : i32
     %c1_i10 = hw.constant 1 : i10
-    %c0_i11 = hw.constant 0 : i11
     %c254_i10 = hw.constant 254 : i10
     %c0_i23 = hw.constant 0 : i23
     %c127_i10 = hw.constant 127 : i10
-    %c6_i10 = hw.constant 6 : i10
+    %c9_i10 = hw.constant 9 : i10
     %c0_i6 = hw.constant 0 : i6
-    %c1_i13 = hw.constant 1 : i13
-    %c-1_i13 = hw.constant -1 : i13
-    %c0_i14 = hw.constant 0 : i14
-    %c0_i13 = hw.constant 0 : i13
-    %c10_i9 = hw.constant 10 : i9
+    %c1_i16 = hw.constant 1 : i16
+    %c-1_i16 = hw.constant -1 : i16
+    %c0_i17 = hw.constant 0 : i17
+    %c11_i9 = hw.constant 11 : i9
     %c0_i2 = hw.constant 0 : i2
     %c0_i4 = hw.constant 0 : i4
+    %c0_i16 = hw.constant 0 : i16
     %c0_i24 = hw.constant 0 : i24
     %false = hw.constant false
     %c1_i8 = hw.constant 1 : i8
@@ -154,72 +152,72 @@ module attributes {circt.loweringOptions = "locationInfoStyle=none"} {
     sv.assign %34, %33 : i9
     %35 = sv.read_inout %34 : !hw.inout<i9>
     %36 = comb.extract %35 from 8 : (i9) -> i1
-    %37 = comb.concat %c0_i12, %31 : i12, i48
+    %37 = comb.concat %c0_i15, %31 : i15, i48
     %38 = sv.read_inout %34 : !hw.inout<i9>
     %39 = comb.extract %38 from 7 : (i9) -> i1
     %40 = sv.read_inout %34 : !hw.inout<i9>
     %41 = comb.extract %40 from 6 : (i9) -> i1
     %42 = comb.or %39, %36 : i1
     %43 = comb.or %41, %42 : i1
-    %44 = comb.mux %43, %c0_i60, %37 : i60
-    %45 = sv.wire {hw.verilogName = "_GEN_5"} : !hw.inout<i60>
-    sv.assign %45, %44 : i60
+    %44 = comb.mux %43, %c0_i63, %37 : i63
+    %45 = sv.wire {hw.verilogName = "_GEN_5"} : !hw.inout<i63>
+    sv.assign %45, %44 : i63
     %46 = sv.read_inout %34 : !hw.inout<i9>
     %47 = comb.extract %46 from 5 : (i9) -> i1
-    %48 = sv.read_inout %45 : !hw.inout<i60>
-    %49 = comb.extract %48 from 0 : (i60) -> i28
-    %50 = comb.concat %49, %c0_i16 : i28, i16
-    %51 = sv.read_inout %45 : !hw.inout<i60>
-    %52 = comb.extract %51 from 16 : (i60) -> i44
-    %53 = comb.mux %47, %50, %52 : i44
-    %54 = sv.wire {hw.verilogName = "_GEN_6"} : !hw.inout<i44>
-    sv.assign %54, %53 : i44
+    %48 = sv.read_inout %45 : !hw.inout<i63>
+    %49 = comb.extract %48 from 0 : (i63) -> i31
+    %50 = comb.concat %49, %c0_i16 : i31, i16
+    %51 = sv.read_inout %45 : !hw.inout<i63>
+    %52 = comb.extract %51 from 16 : (i63) -> i47
+    %53 = comb.mux %47, %50, %52 : i47
+    %54 = sv.wire {hw.verilogName = "_GEN_6"} : !hw.inout<i47>
+    sv.assign %54, %53 : i47
     %55 = sv.read_inout %34 : !hw.inout<i9>
     %56 = comb.extract %55 from 4 : (i9) -> i1
-    %57 = sv.read_inout %54 : !hw.inout<i44>
-    %58 = comb.extract %57 from 0 : (i44) -> i28
-    %59 = sv.read_inout %54 : !hw.inout<i44>
-    %60 = comb.extract %59 from 16 : (i44) -> i28
-    %61 = comb.mux %56, %58, %60 : i28
-    %62 = sv.wire {hw.verilogName = "_GEN_7"} : !hw.inout<i28>
-    sv.assign %62, %61 : i28
+    %57 = sv.read_inout %54 : !hw.inout<i47>
+    %58 = comb.extract %57 from 0 : (i47) -> i31
+    %59 = sv.read_inout %54 : !hw.inout<i47>
+    %60 = comb.extract %59 from 16 : (i47) -> i31
+    %61 = comb.mux %56, %58, %60 : i31
+    %62 = sv.wire {hw.verilogName = "_GEN_7"} : !hw.inout<i31>
+    sv.assign %62, %61 : i31
     %63 = sv.read_inout %34 : !hw.inout<i9>
     %64 = comb.extract %63 from 3 : (i9) -> i1
-    %65 = sv.read_inout %62 : !hw.inout<i28>
-    %66 = comb.extract %65 from 0 : (i28) -> i20
-    %67 = sv.read_inout %62 : !hw.inout<i28>
-    %68 = comb.extract %67 from 8 : (i28) -> i20
-    %69 = comb.mux %64, %66, %68 : i20
-    %70 = sv.wire {hw.verilogName = "_GEN_8"} : !hw.inout<i20>
-    sv.assign %70, %69 : i20
+    %65 = sv.read_inout %62 : !hw.inout<i31>
+    %66 = comb.extract %65 from 0 : (i31) -> i23
+    %67 = sv.read_inout %62 : !hw.inout<i31>
+    %68 = comb.extract %67 from 8 : (i31) -> i23
+    %69 = comb.mux %64, %66, %68 : i23
+    %70 = sv.wire {hw.verilogName = "_GEN_8"} : !hw.inout<i23>
+    sv.assign %70, %69 : i23
     %71 = sv.read_inout %34 : !hw.inout<i9>
     %72 = comb.extract %71 from 2 : (i9) -> i1
-    %73 = sv.read_inout %70 : !hw.inout<i20>
-    %74 = comb.extract %73 from 0 : (i20) -> i16
-    %75 = sv.read_inout %70 : !hw.inout<i20>
-    %76 = comb.extract %75 from 4 : (i20) -> i16
-    %77 = comb.mux %72, %74, %76 : i16
-    %78 = sv.wire {hw.verilogName = "_GEN_9"} : !hw.inout<i16>
-    sv.assign %78, %77 : i16
+    %73 = sv.read_inout %70 : !hw.inout<i23>
+    %74 = comb.extract %73 from 0 : (i23) -> i19
+    %75 = sv.read_inout %70 : !hw.inout<i23>
+    %76 = comb.extract %75 from 4 : (i23) -> i19
+    %77 = comb.mux %72, %74, %76 : i19
+    %78 = sv.wire {hw.verilogName = "_GEN_9"} : !hw.inout<i19>
+    sv.assign %78, %77 : i19
     %79 = sv.read_inout %34 : !hw.inout<i9>
     %80 = comb.extract %79 from 1 : (i9) -> i1
-    %81 = sv.read_inout %78 : !hw.inout<i16>
-    %82 = comb.extract %81 from 0 : (i16) -> i14
-    %83 = sv.read_inout %78 : !hw.inout<i16>
-    %84 = comb.extract %83 from 2 : (i16) -> i14
-    %85 = comb.mux %80, %82, %84 : i14
-    %86 = sv.wire {hw.verilogName = "_GEN_10"} : !hw.inout<i14>
-    sv.assign %86, %85 : i14
+    %81 = sv.read_inout %78 : !hw.inout<i19>
+    %82 = comb.extract %81 from 0 : (i19) -> i17
+    %83 = sv.read_inout %78 : !hw.inout<i19>
+    %84 = comb.extract %83 from 2 : (i19) -> i17
+    %85 = comb.mux %80, %82, %84 : i17
+    %86 = sv.wire {hw.verilogName = "_GEN_10"} : !hw.inout<i17>
+    sv.assign %86, %85 : i17
     %87 = sv.read_inout %34 : !hw.inout<i9>
     %88 = comb.extract %87 from 0 : (i9) -> i1
-    %89 = sv.read_inout %86 : !hw.inout<i14>
-    %90 = comb.extract %89 from 0 : (i14) -> i13
-    %91 = sv.read_inout %86 : !hw.inout<i14>
-    %92 = comb.extract %91 from 1 : (i14) -> i13
-    %93 = comb.mux %88, %90, %92 : i13
+    %89 = sv.read_inout %86 : !hw.inout<i17>
+    %90 = comb.extract %89 from 0 : (i17) -> i16
+    %91 = sv.read_inout %86 : !hw.inout<i17>
+    %92 = comb.extract %91 from 1 : (i17) -> i16
+    %93 = comb.mux %88, %90, %92 : i16
     %94 = sv.read_inout %34 : !hw.inout<i9>
-    %95 = comb.icmp sgt %94, %c10_i9 : i9
-    %96 = comb.mux %36, %c0_i13, %93 : i13
+    %95 = comb.icmp sgt %94, %c11_i9 : i9
+    %96 = comb.mux %36, %c0_i16, %93 : i16
     %97 = comb.or %95, %7 : i1
     %98 = sv.read_inout %1 : !hw.inout<i1>
     %99 = comb.or %17, %98 : i1
@@ -229,137 +227,136 @@ module attributes {circt.loweringOptions = "locationInfoStyle=none"} {
     }(syncreset : posedge %reset) {
       sv.passign %1, %false : i1
     }
-    %101 = comb.concat %false, %96 : i1, i13
+    %101 = comb.concat %false, %96 : i1, i16
     %102 = sv.read_inout %23 : !hw.inout<i1>
-    %103 = comb.concat %c0_i13, %102 : i13, i1
-    %104 = sv.read_inout %0 : !hw.inout<i14>
-    %105 = comb.extract %104 from 0 : (i14) -> i13
-    %106 = comb.concat %false, %105 : i1, i13
-    %107 = comb.add %101, %103 : i14
-    %108 = comb.add %106, %107 : i14
+    %103 = comb.concat %c0_i16, %102 : i16, i1
+    %104 = sv.read_inout %0 : !hw.inout<i17>
+    %105 = comb.extract %104 from 0 : (i17) -> i16
+    %106 = comb.concat %false, %105 : i1, i16
+    %107 = comb.add %101, %103 : i17
+    %108 = comb.add %106, %107 : i17
     sv.alwaysff(posedge %clk) {
-      sv.passign %0, %108 : i14
+      sv.passign %0, %108 : i17
     }(syncreset : posedge %reset) {
-      sv.passign %0, %c0_i14 : i14
+      sv.passign %0, %c0_i17 : i17
     }
-    %109 = comb.icmp eq %105, %c0_i13 : i13
+    %109 = comb.icmp eq %105, %c0_i16 : i16
     %110 = sv.wire {hw.verilogName = "_GEN_11"} : !hw.inout<i1>
     sv.assign %110, %109 : i1
-    %111 = sv.read_inout %0 : !hw.inout<i14>
-    %112 = comb.extract %111 from 12 : (i14) -> i1
-    %113 = comb.xor %105, %c-1_i13 : i13
-    %114 = comb.add %113, %c1_i13 : i13
-    %115 = comb.mux %112, %114, %105 : i13
-    %116 = sv.wire {hw.verilogName = "_GEN_12"} : !hw.inout<i13>
-    sv.assign %116, %115 : i13
-    %117 = sv.read_inout %116 : !hw.inout<i13>
-    %118 = comb.extract %117 from 5 : (i13) -> i8
+    %111 = sv.read_inout %0 : !hw.inout<i17>
+    %112 = comb.extract %111 from 15 : (i17) -> i1
+    %113 = comb.xor %105, %c-1_i16 : i16
+    %114 = comb.add %113, %c1_i16 : i16
+    %115 = comb.mux %112, %114, %105 : i16
+    %116 = sv.wire {hw.verilogName = "_GEN_12"} : !hw.inout<i16>
+    sv.assign %116, %115 : i16
+    %117 = sv.read_inout %116 : !hw.inout<i16>
+    %118 = comb.extract %117 from 8 : (i16) -> i8
     %119 = comb.icmp eq %118, %c0_i8 : i8
     %120 = sv.wire {hw.verilogName = "_GEN_13"} : !hw.inout<i1>
     sv.assign %120, %119 : i1
-    %121 = sv.read_inout %116 : !hw.inout<i13>
-    %122 = comb.extract %121 from 0 : (i13) -> i5
-    %123 = comb.concat %122, %c0_i2 : i5, i2
-    %124 = sv.read_inout %116 : !hw.inout<i13>
-    %125 = comb.extract %124 from 6 : (i13) -> i7
-    %126 = sv.read_inout %120 : !hw.inout<i1>
-    %127 = comb.mux %126, %123, %125 : i7
-    %128 = sv.wire {hw.verilogName = "_GEN_14"} : !hw.inout<i7>
-    sv.assign %128, %127 : i7
-    %129 = sv.read_inout %128 : !hw.inout<i7>
-    %130 = comb.extract %129 from 3 : (i7) -> i4
-    %131 = comb.icmp eq %130, %c0_i4 : i4
-    %132 = sv.wire {hw.verilogName = "_GEN_15"} : !hw.inout<i1>
-    sv.assign %132, %131 : i1
-    %133 = sv.read_inout %128 : !hw.inout<i7>
-    %134 = comb.extract %133 from 0 : (i7) -> i3
-    %135 = sv.read_inout %128 : !hw.inout<i7>
-    %136 = comb.extract %135 from 4 : (i7) -> i3
-    %137 = sv.read_inout %132 : !hw.inout<i1>
-    %138 = comb.mux %137, %134, %136 : i3
-    %139 = sv.wire {hw.verilogName = "_GEN_16"} : !hw.inout<i3>
-    sv.assign %139, %138 : i3
-    %140 = sv.read_inout %139 : !hw.inout<i3>
-    %141 = comb.extract %140 from 1 : (i3) -> i2
-    %142 = comb.icmp eq %141, %c0_i2 : i2
-    %143 = sv.wire {hw.verilogName = "_GEN_17"} : !hw.inout<i1>
-    sv.assign %143, %142 : i1
-    %144 = sv.read_inout %139 : !hw.inout<i3>
-    %145 = comb.extract %144 from 0 : (i3) -> i1
-    %146 = sv.read_inout %139 : !hw.inout<i3>
-    %147 = comb.extract %146 from 2 : (i3) -> i1
-    %148 = sv.read_inout %143 : !hw.inout<i1>
-    %149 = comb.mux %148, %145, %147 : i1
-    %150 = comb.xor %149, %true : i1
-    %151 = sv.wire {hw.verilogName = "_GEN_18"} : !hw.inout<i1>
-    sv.assign %151, %150 : i1
-    %152 = sv.read_inout %116 : !hw.inout<i13>
-    %153 = comb.extract %152 from 0 : (i13) -> i4
-    %154 = comb.concat %153, %c0_i8 : i4, i8
-    %155 = sv.read_inout %116 : !hw.inout<i13>
-    %156 = comb.extract %155 from 0 : (i13) -> i12
-    %157 = sv.read_inout %120 : !hw.inout<i1>
-    %158 = comb.mux %157, %154, %156 : i12
-    %159 = sv.wire {hw.verilogName = "_GEN_19"} : !hw.inout<i12>
-    sv.assign %159, %158 : i12
-    %160 = sv.read_inout %159 : !hw.inout<i12>
-    %161 = comb.extract %160 from 0 : (i12) -> i8
-    %162 = comb.concat %161, %c0_i4 : i8, i4
-    %163 = sv.read_inout %132 : !hw.inout<i1>
-    %164 = sv.read_inout %159 : !hw.inout<i12>
-    %165 = comb.mux %163, %162, %164 : i12
-    %166 = sv.wire {hw.verilogName = "_GEN_20"} : !hw.inout<i12>
-    sv.assign %166, %165 : i12
-    %167 = sv.read_inout %166 : !hw.inout<i12>
-    %168 = comb.extract %167 from 0 : (i12) -> i10
-    %169 = comb.concat %168, %c0_i2 : i10, i2
-    %170 = sv.read_inout %143 : !hw.inout<i1>
-    %171 = sv.read_inout %166 : !hw.inout<i12>
-    %172 = comb.mux %170, %169, %171 : i12
-    %173 = sv.wire {hw.verilogName = "_GEN_21"} : !hw.inout<i12>
-    sv.assign %173, %172 : i12
-    %174 = sv.read_inout %173 : !hw.inout<i12>
-    %175 = comb.extract %174 from 0 : (i12) -> i11
-    %176 = comb.concat %175, %false : i11, i1
-    %177 = sv.read_inout %151 : !hw.inout<i1>
-    %178 = sv.read_inout %173 : !hw.inout<i12>
-    %179 = comb.mux %177, %176, %178 : i12
-    %180 = sv.read_inout %120 : !hw.inout<i1>
-    %181 = sv.read_inout %132 : !hw.inout<i1>
-    %182 = sv.read_inout %143 : !hw.inout<i1>
-    %183 = sv.read_inout %151 : !hw.inout<i1>
-    %184 = comb.concat %c0_i6, %180, %181, %182, %183 : i6, i1, i1, i1, i1
-    %185 = comb.sub %c6_i10, %184 : i10
-    %186 = comb.add %185, %c127_i10 : i10
-    %187 = sv.wire {hw.verilogName = "_GEN_22"} : !hw.inout<i10>
-    sv.assign %187, %186 : i10
-    %188 = comb.concat %179, %c0_i11 : i12, i11
-    %189 = sv.read_inout %187 : !hw.inout<i10>
-    %190 = comb.icmp slt %189, %c1_i10 : i10
-    %191 = sv.wire {hw.verilogName = "_GEN_23"} : !hw.inout<i1>
-    sv.assign %191, %190 : i1
-    %192 = sv.read_inout %187 : !hw.inout<i10>
-    %193 = comb.icmp sgt %192, %c254_i10 : i10
-    %194 = sv.wire {hw.verilogName = "_GEN_24"} : !hw.inout<i1>
-    sv.assign %194, %193 : i1
-    %195 = sv.read_inout %187 : !hw.inout<i10>
-    %196 = comb.extract %195 from 0 : (i10) -> i8
-    %197 = sv.read_inout %110 : !hw.inout<i1>
-    %198 = sv.read_inout %191 : !hw.inout<i1>
-    %199 = comb.or %198, %197 : i1
-    %200 = comb.mux %199, %c0_i8, %196 : i8
-    %201 = sv.read_inout %194 : !hw.inout<i1>
-    %202 = comb.mux %201, %c-1_i8, %200 : i8
-    %203 = sv.read_inout %110 : !hw.inout<i1>
-    %204 = sv.read_inout %191 : !hw.inout<i1>
-    %205 = sv.read_inout %194 : !hw.inout<i1>
+    %121 = sv.read_inout %116 : !hw.inout<i16>
+    %122 = comb.extract %121 from 1 : (i16) -> i7
+    %123 = sv.read_inout %116 : !hw.inout<i16>
+    %124 = comb.extract %123 from 9 : (i16) -> i7
+    %125 = sv.read_inout %120 : !hw.inout<i1>
+    %126 = comb.mux %125, %122, %124 : i7
+    %127 = sv.wire {hw.verilogName = "_GEN_14"} : !hw.inout<i7>
+    sv.assign %127, %126 : i7
+    %128 = sv.read_inout %127 : !hw.inout<i7>
+    %129 = comb.extract %128 from 3 : (i7) -> i4
+    %130 = comb.icmp eq %129, %c0_i4 : i4
+    %131 = sv.wire {hw.verilogName = "_GEN_15"} : !hw.inout<i1>
+    sv.assign %131, %130 : i1
+    %132 = sv.read_inout %127 : !hw.inout<i7>
+    %133 = comb.extract %132 from 0 : (i7) -> i3
+    %134 = sv.read_inout %127 : !hw.inout<i7>
+    %135 = comb.extract %134 from 4 : (i7) -> i3
+    %136 = sv.read_inout %131 : !hw.inout<i1>
+    %137 = comb.mux %136, %133, %135 : i3
+    %138 = sv.wire {hw.verilogName = "_GEN_16"} : !hw.inout<i3>
+    sv.assign %138, %137 : i3
+    %139 = sv.read_inout %138 : !hw.inout<i3>
+    %140 = comb.extract %139 from 1 : (i3) -> i2
+    %141 = comb.icmp eq %140, %c0_i2 : i2
+    %142 = sv.wire {hw.verilogName = "_GEN_17"} : !hw.inout<i1>
+    sv.assign %142, %141 : i1
+    %143 = sv.read_inout %138 : !hw.inout<i3>
+    %144 = comb.extract %143 from 0 : (i3) -> i1
+    %145 = sv.read_inout %138 : !hw.inout<i3>
+    %146 = comb.extract %145 from 2 : (i3) -> i1
+    %147 = sv.read_inout %142 : !hw.inout<i1>
+    %148 = comb.mux %147, %144, %146 : i1
+    %149 = comb.xor %148, %true : i1
+    %150 = sv.wire {hw.verilogName = "_GEN_18"} : !hw.inout<i1>
+    sv.assign %150, %149 : i1
+    %151 = sv.read_inout %116 : !hw.inout<i16>
+    %152 = comb.extract %151 from 0 : (i16) -> i7
+    %153 = comb.concat %152, %c0_i8 : i7, i8
+    %154 = sv.read_inout %116 : !hw.inout<i16>
+    %155 = comb.extract %154 from 0 : (i16) -> i15
+    %156 = sv.read_inout %120 : !hw.inout<i1>
+    %157 = comb.mux %156, %153, %155 : i15
+    %158 = sv.wire {hw.verilogName = "_GEN_19"} : !hw.inout<i15>
+    sv.assign %158, %157 : i15
+    %159 = sv.read_inout %158 : !hw.inout<i15>
+    %160 = comb.extract %159 from 0 : (i15) -> i11
+    %161 = comb.concat %160, %c0_i4 : i11, i4
+    %162 = sv.read_inout %131 : !hw.inout<i1>
+    %163 = sv.read_inout %158 : !hw.inout<i15>
+    %164 = comb.mux %162, %161, %163 : i15
+    %165 = sv.wire {hw.verilogName = "_GEN_20"} : !hw.inout<i15>
+    sv.assign %165, %164 : i15
+    %166 = sv.read_inout %165 : !hw.inout<i15>
+    %167 = comb.extract %166 from 0 : (i15) -> i13
+    %168 = comb.concat %167, %c0_i2 : i13, i2
+    %169 = sv.read_inout %142 : !hw.inout<i1>
+    %170 = sv.read_inout %165 : !hw.inout<i15>
+    %171 = comb.mux %169, %168, %170 : i15
+    %172 = sv.wire {hw.verilogName = "_GEN_21"} : !hw.inout<i15>
+    sv.assign %172, %171 : i15
+    %173 = sv.read_inout %172 : !hw.inout<i15>
+    %174 = comb.extract %173 from 0 : (i15) -> i14
+    %175 = comb.concat %174, %false : i14, i1
+    %176 = sv.read_inout %150 : !hw.inout<i1>
+    %177 = sv.read_inout %172 : !hw.inout<i15>
+    %178 = comb.mux %176, %175, %177 : i15
+    %179 = sv.read_inout %120 : !hw.inout<i1>
+    %180 = sv.read_inout %131 : !hw.inout<i1>
+    %181 = sv.read_inout %142 : !hw.inout<i1>
+    %182 = sv.read_inout %150 : !hw.inout<i1>
+    %183 = comb.concat %c0_i6, %179, %180, %181, %182 : i6, i1, i1, i1, i1
+    %184 = comb.sub %c9_i10, %183 : i10
+    %185 = comb.add %184, %c127_i10 : i10
+    %186 = sv.wire {hw.verilogName = "_GEN_22"} : !hw.inout<i10>
+    sv.assign %186, %185 : i10
+    %187 = comb.concat %178, %c0_i8 : i15, i8
+    %188 = sv.read_inout %186 : !hw.inout<i10>
+    %189 = comb.icmp slt %188, %c1_i10 : i10
+    %190 = sv.wire {hw.verilogName = "_GEN_23"} : !hw.inout<i1>
+    sv.assign %190, %189 : i1
+    %191 = sv.read_inout %186 : !hw.inout<i10>
+    %192 = comb.icmp sgt %191, %c254_i10 : i10
+    %193 = sv.wire {hw.verilogName = "_GEN_24"} : !hw.inout<i1>
+    sv.assign %193, %192 : i1
+    %194 = sv.read_inout %186 : !hw.inout<i10>
+    %195 = comb.extract %194 from 0 : (i10) -> i8
+    %196 = sv.read_inout %110 : !hw.inout<i1>
+    %197 = sv.read_inout %190 : !hw.inout<i1>
+    %198 = comb.or %197, %196 : i1
+    %199 = comb.mux %198, %c0_i8, %195 : i8
+    %200 = sv.read_inout %193 : !hw.inout<i1>
+    %201 = comb.mux %200, %c-1_i8, %199 : i8
+    %202 = sv.read_inout %110 : !hw.inout<i1>
+    %203 = sv.read_inout %190 : !hw.inout<i1>
+    %204 = sv.read_inout %193 : !hw.inout<i1>
+    %205 = comb.or %202, %204 : i1
     %206 = comb.or %203, %205 : i1
-    %207 = comb.or %204, %206 : i1
-    %208 = comb.mux %207, %c0_i23, %188 : i23
-    %209 = comb.concat %112, %202, %208 : i1, i8, i23
-    %210 = sv.read_inout %1 : !hw.inout<i1>
-    %211 = comb.mux %210, %c2143289344_i32, %209 : i32
-    hw.output %211 : i32
+    %207 = comb.mux %206, %c0_i23, %187 : i23
+    %208 = comb.concat %112, %201, %207 : i1, i8, i23
+    %209 = sv.read_inout %1 : !hw.inout<i1>
+    %210 = comb.mux %209, %c2143289344_i32, %208 : i32
+    hw.output %210 : i32
   }
 }
 
