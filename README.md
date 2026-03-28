@@ -86,6 +86,42 @@ Specialization is configured in `scripts/generate_s3fdp_core.sh`:
 - `s3fdp.we=8`
 - `s3fdp.wf=7`
 
+### New `emeraude-mlir` specialization attribute path
+
+`flopoco-arith-to-comb` now accepts format override keys through
+`flopoco.specializations`, so a specialization can request another float format
+without introducing a separate dedicated pass.
+
+At operation scope, this looks like:
+
+```mlir
+%s = arith.addf %acc, %m {
+  flopoco.lowering_mode = "specialized",
+  flopoco.specializations = "enable=s3fdp,s3fdp.ovf=10,s3fdp.msb=122,s3fdp.lsb=-133,s3fdp.chunk_size=16,s3fdp.we=8,s3fdp.wf=7"
+} : bf16
+```
+
+The same keys can also be passed globally through the pass option string used in
+the generation script.
+
+### `bf16` and Kulisch profiles
+
+This repository now targets a `bf16` accumulation core (`wE=8`, `wF=7`), with
+the default profile set to the widest tested passing window for `ovf=10`:
+
+- default profile: `ovf=10, msb=122, lsb=-133` (window width `255`)
+
+A smaller variant is useful when exploring area/latency tradeoffs:
+
+- smaller profile example: `ovf=10, msb=80, lsb=-80` (window width `160`)
+
+You can generate that smaller variant directly:
+
+```sh
+S3FDP_OPTS='lowering-mode=specialized target-frequency=5e7 specializations=enable=s3fdp,s3fdp.ovf=10,s3fdp.msb=80,s3fdp.lsb=-80,s3fdp.chunk_size=16,s3fdp.we=8,s3fdp.wf=7' \
+  ./scripts/generate_s3fdp_core.sh
+```
+
 A representative comb-level view produced in the flow is shown below:
 
 ![MLIR to SystemVerilog / comb-focused view (from codez examples)](docs/mlir_to_systemverilog_comb.png)
