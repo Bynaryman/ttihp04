@@ -1,6 +1,6 @@
 ## How it works
 
-`tt_um_lledoux_s3fdp_seqcomb` wraps a generated seq+comb arithmetic core built from MLIR with Emeraude + CIRCT.
+`tt_um_lledoux_bf16_diminished_kulisch` wraps a generated seq+comb arithmetic core built from MLIR with Emeraude + CIRCT.
 
 The flow detects a loop pattern in MLIR (`scf.for` + `memref.load/store` + `arith.mulf/addf`) and emits a specialized S3FDP accumulator instead of generic floating-point datapath logic.
 

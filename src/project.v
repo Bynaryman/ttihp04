@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt_um_lledoux_s3fdp_seqcomb (
+module tt_um_lledoux_bf16_diminished_kulisch (
     input  wire [7:0] ui_in,
     output logic [7:0] uo_out,
     input  wire [7:0] uio_in,

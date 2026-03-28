@@ -28,7 +28,7 @@ module tb ();
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_lledoux_s3fdp_seqcomb user_project (
+  tt_um_lledoux_bf16_diminished_kulisch user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef USE_POWER_PINS

@@ -4,7 +4,7 @@
 
 This repository is a TinyTapeout artifact for a simple but important compiler idea: keep arithmetic decisions visible until they become hardware, then validate that path on a small, real design.
 
-The design is `tt_um_lledoux_s3fdp_seqcomb`, a streaming wrapper around a generated floating-point accumulation core.
+The design is `tt_um_lledoux_bf16_diminished_kulisch`, a streaming wrapper around a generated floating-point accumulation core.
 It targets open-source silicon through TinyTapeout on Sky130.
 
 The repository is also a compact, reproducible view of a line of work spanning several levels of the hardware/software stack: arithmetic-oriented [MLIR](https://mlir.llvm.org/) design (a multi-level compiler IR), lowering passes in `emeraude-mlir` (my arithmetic-oriented MLIR compiler repository, not yet open), supporting [CIRCT](https://github.com/llvm/circt) contributions (hardware-oriented compiler infrastructure built on MLIR), and my [FloPoCo2](https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux) refactoring work toward IR generation for arithmetic circuits, needed to keep floating-point datapaths compiler-visible instead of opaque.
@@ -143,7 +143,7 @@ Here CIRCT serves as the structural backend, while the floating-point path is ma
 
 ## TinyTapeout wrapper behavior
 
-Top module: `tt_um_lledoux_s3fdp_seqcomb`
+Top module: `tt_um_lledoux_bf16_diminished_kulisch`
 
 Protocol:
 
