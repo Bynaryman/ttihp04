@@ -232,7 +232,7 @@ module s3fdp_accum_core_wE8_wF7_cs16(
   output [15:0] r
 );
 
-  reg  [2:0]   _GEN;
+  reg  [10:0]  _GEN;
   reg  [16:0]  _GEN_0;
   reg  [16:0]  _GEN_1;
   reg  [16:0]  _GEN_2;
@@ -257,21 +257,21 @@ module s3fdp_accum_core_wE8_wF7_cs16(
     {16{_GEN_19}} ^ {8'h0, ~_GEN_17, x[6:0]} * {8'h0, ~_GEN_18, y[6:0]};
   wire [8:0]   _GEN_21 =
     {1'h0, _GEN_17 ? 8'h1 : x[14:7]} + {1'h0, _GEN_18 ? 8'h1 : y[14:7]} - 9'h78;
-  wire [272:0] _GEN_22 = _GEN_21[8] ? {1'h0, _GEN_20, 256'h0} : {257'h0, _GEN_20};
-  wire [272:0] _GEN_23 = _GEN_21[7] ? {_GEN_22[144:0], 128'h0} : _GEN_22;
-  wire [272:0] _GEN_24 = _GEN_21[6] ? {_GEN_23[208:0], 64'h0} : _GEN_23;
-  wire [272:0] _GEN_25 = _GEN_21[5] ? {_GEN_24[240:0], 32'h0} : _GEN_24;
-  wire [272:0] _GEN_26 = _GEN_21[4] ? {_GEN_25[256:0], 16'h0} : _GEN_25;
-  wire [264:0] _GEN_27 = _GEN_21[3] ? _GEN_26[264:0] : _GEN_26[272:8];
-  wire [260:0] _GEN_28 = _GEN_21[2] ? _GEN_27[260:0] : _GEN_27[264:4];
-  wire [258:0] _GEN_29 = _GEN_21[1] ? _GEN_28[258:0] : _GEN_28[260:2];
-  wire [257:0] _GEN_30 =
-    _GEN_21[8] ? 258'h0 : _GEN_21[0] ? _GEN_29[257:0] : _GEN_29[258:1];
+  wire [280:0] _GEN_22 = _GEN_21[8] ? {9'h0, _GEN_20, 256'h0} : {265'h0, _GEN_20};
+  wire [280:0] _GEN_23 = _GEN_21[7] ? {_GEN_22[152:0], 128'h0} : _GEN_22;
+  wire [280:0] _GEN_24 = _GEN_21[6] ? {_GEN_23[216:0], 64'h0} : _GEN_23;
+  wire [280:0] _GEN_25 = _GEN_21[5] ? {_GEN_24[248:0], 32'h0} : _GEN_24;
+  wire [280:0] _GEN_26 = _GEN_21[4] ? {_GEN_25[264:0], 16'h0} : _GEN_25;
+  wire [272:0] _GEN_27 = _GEN_21[3] ? _GEN_26[272:0] : _GEN_26[280:8];
+  wire [268:0] _GEN_28 = _GEN_21[2] ? _GEN_27[268:0] : _GEN_27[272:4];
+  wire [266:0] _GEN_29 = _GEN_21[1] ? _GEN_28[266:0] : _GEN_28[268:2];
+  wire [265:0] _GEN_30 =
+    _GEN_21[8] ? 266'h0 : _GEN_21[0] ? _GEN_29[265:0] : _GEN_29[266:1];
   always_ff @(posedge clk) begin
     if (reset)
       _GEN_16 <= 1'h0;
     else
-      _GEN_16 <= $signed(_GEN_21) > 9'shFD | (&(x[14:7])) | (&(y[14:7])) | _GEN_16;
+      _GEN_16 <= (&(x[14:7])) | (&(y[14:7])) | _GEN_16;
   end // always_ff @(posedge)
   always_ff @(posedge clk) begin
     if (reset)
@@ -371,12 +371,12 @@ module s3fdp_accum_core_wE8_wF7_cs16(
   end // always_ff @(posedge)
   always_ff @(posedge clk) begin
     if (reset)
-      _GEN <= 3'h0;
+      _GEN <= 11'h0;
     else
-      _GEN <= {1'h0, _GEN[1:0]} + {1'h0, _GEN_30[257:256]} + {2'h0, _GEN_0[16]};
+      _GEN <= {1'h0, _GEN[9:0]} + {1'h0, _GEN_30[265:256]} + {10'h0, _GEN_0[16]};
   end // always_ff @(posedge)
-  wire [257:0] _GEN_31 =
-    {_GEN[1:0],
+  wire [265:0] _GEN_31 =
+    {_GEN[9:0],
      _GEN_0[15:0],
      _GEN_1[15:0],
      _GEN_2[15:0],
@@ -393,7 +393,7 @@ module s3fdp_accum_core_wE8_wF7_cs16(
      _GEN_13[15:0],
      _GEN_14[15:0],
      _GEN_15[15:0]}
-    + {1'h0,
+    + {9'h0,
        _GEN_0[16],
        15'h0,
        _GEN_1[16],
@@ -426,10 +426,10 @@ module s3fdp_accum_core_wE8_wF7_cs16(
        15'h0,
        _GEN_15[16],
        16'h0};
-  wire         _GEN_32 = _GEN_31 == 258'h0;
-  wire [257:0] _GEN_33 = _GEN_31[257] ? ~_GEN_31 + 258'h1 : _GEN_31;
-  wire         _GEN_34 = _GEN_33[257:2] == 256'h0;
-  wire [254:0] _GEN_35 = _GEN_34 ? {_GEN_33[1:0], 253'h0} : _GEN_33[257:3];
+  wire         _GEN_32 = _GEN_31 == 266'h0;
+  wire [265:0] _GEN_33 = _GEN_31[265] ? ~_GEN_31 + 266'h1 : _GEN_31;
+  wire         _GEN_34 = _GEN_33[265:10] == 256'h0;
+  wire [254:0] _GEN_35 = _GEN_34 ? {_GEN_33[9:0], 245'h0} : _GEN_33[265:11];
   wire         _GEN_36 = _GEN_35[254:127] == 128'h0;
   wire [126:0] _GEN_37 = _GEN_36 ? _GEN_35[126:0] : _GEN_35[254:128];
   wire         _GEN_38 = _GEN_37[126:63] == 64'h0;
@@ -444,20 +444,20 @@ module s3fdp_accum_core_wE8_wF7_cs16(
   wire [2:0]   _GEN_47 = _GEN_46 ? _GEN_45[2:0] : _GEN_45[6:4];
   wire         _GEN_48 = _GEN_47[2:1] == 2'h0;
   wire         _GEN_49 = ~(_GEN_48 ? _GEN_47[0] : _GEN_47[2]);
-  wire [256:0] _GEN_50 = _GEN_34 ? {_GEN_33[0], 256'h0} : _GEN_33[256:0];
-  wire [256:0] _GEN_51 = _GEN_36 ? {_GEN_50[128:0], 128'h0} : _GEN_50;
-  wire [256:0] _GEN_52 = _GEN_38 ? {_GEN_51[192:0], 64'h0} : _GEN_51;
-  wire [256:0] _GEN_53 = _GEN_40 ? {_GEN_52[224:0], 32'h0} : _GEN_52;
-  wire [256:0] _GEN_54 = _GEN_42 ? {_GEN_53[240:0], 16'h0} : _GEN_53;
-  wire [256:0] _GEN_55 = _GEN_44 ? {_GEN_54[248:0], 8'h0} : _GEN_54;
-  wire [256:0] _GEN_56 = _GEN_46 ? {_GEN_55[252:0], 4'h0} : _GEN_55;
-  wire [256:0] _GEN_57 = _GEN_48 ? {_GEN_56[254:0], 2'h0} : _GEN_56;
-  wire [256:0] _GEN_58 = _GEN_49 ? {_GEN_57[255:0], 1'h0} : _GEN_57;
+  wire [264:0] _GEN_50 = _GEN_34 ? {_GEN_33[8:0], 256'h0} : _GEN_33[264:0];
+  wire [264:0] _GEN_51 = _GEN_36 ? {_GEN_50[136:0], 128'h0} : _GEN_50;
+  wire [264:0] _GEN_52 = _GEN_38 ? {_GEN_51[200:0], 64'h0} : _GEN_51;
+  wire [264:0] _GEN_53 = _GEN_40 ? {_GEN_52[232:0], 32'h0} : _GEN_52;
+  wire [264:0] _GEN_54 = _GEN_42 ? {_GEN_53[248:0], 16'h0} : _GEN_53;
+  wire [264:0] _GEN_55 = _GEN_44 ? {_GEN_54[256:0], 8'h0} : _GEN_54;
+  wire [264:0] _GEN_56 = _GEN_46 ? {_GEN_55[260:0], 4'h0} : _GEN_55;
+  wire [264:0] _GEN_57 = _GEN_48 ? {_GEN_56[262:0], 2'h0} : _GEN_56;
+  wire [264:0] _GEN_58 = _GEN_49 ? {_GEN_57[263:0], 1'h0} : _GEN_57;
   wire [8:0]   _GEN_59 =
-    {2'h1, _GEN_58[256:250]}
-    + {8'h0, _GEN_58[249] & (_GEN_58[248] | (|(_GEN_58[247:0])) | _GEN_58[250])};
+    {2'h1, _GEN_58[264:258]}
+    + {8'h0, _GEN_58[257] & (_GEN_58[256] | (|(_GEN_58[255:0])) | _GEN_58[258])};
   wire [10:0]  _GEN_60 =
-    11'h7C
+    11'h84
     - {2'h0,
        _GEN_34,
        _GEN_36,
@@ -473,7 +473,7 @@ module s3fdp_accum_core_wE8_wF7_cs16(
   assign r =
     _GEN_16
       ? 16'h7FC0
-      : {_GEN_31[257],
+      : {_GEN_31[265],
          _GEN_62 ? 8'hFF : _GEN_61 | _GEN_32 ? 8'h0 : _GEN_60[7:0],
          _GEN_61 | _GEN_32 | _GEN_62 ? 7'h0 : _GEN_59[8] ? _GEN_59[7:1] : _GEN_59[6:0]};
 endmodule
