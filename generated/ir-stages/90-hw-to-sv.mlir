@@ -57,29 +57,36 @@ module {
     hw.output %23 : i32
   }
   hw.module @s3fdp_accum_core_wE8_wF23_cs16(in %clk : i1, in %reset : i1, in %x : i32, in %y : i32, out r : i32) {
-    %c0_i15 = hw.constant 0 : i15
-    %c0_i63 = hw.constant 0 : i63
+    %c0_i38 = hw.constant 0 : i38
+    %c0_i86 = hw.constant 0 : i86
     %c2143289344_i32 = hw.constant 2143289344 : i32
     %c1_i10 = hw.constant 1 : i10
-    %c-247_i9 = hw.constant -247 : i9
+    %c1_i2 = hw.constant 1 : i2
+    %c-230_i9 = hw.constant -230 : i9
     %c254_i10 = hw.constant 254 : i10
     %c0_i23 = hw.constant 0 : i23
+    %c0_i9 = hw.constant 0 : i9
     %c127_i10 = hw.constant 127 : i10
-    %c9_i10 = hw.constant 9 : i10
-    %c0_i6 = hw.constant 0 : i6
-    %c1_i16 = hw.constant 1 : i16
-    %c-1_i16 = hw.constant -1 : i16
+    %c15_i10 = hw.constant 15 : i10
+    %c1_i39 = hw.constant 1 : i39
+    %c-1_i39 = hw.constant -1 : i39
+    %c0_i13 = hw.constant 0 : i13
+    %c0_i12 = hw.constant 0 : i12
+    %c0_i7 = hw.constant 0 : i7
     %c0_i17 = hw.constant 0 : i17
-    %c11_i9 = hw.constant 11 : i9
+    %c0_i39 = hw.constant 0 : i39
+    %c33_i9 = hw.constant 33 : i9
     %c0_i2 = hw.constant 0 : i2
     %c0_i4 = hw.constant 0 : i4
     %c0_i16 = hw.constant 0 : i16
+    %c0_i64 = hw.constant 0 : i64
     %c0_i24 = hw.constant 0 : i24
     %false = hw.constant false
     %c1_i8 = hw.constant 1 : i8
     %true = hw.constant true
     %c-1_i8 = hw.constant -1 : i8
     %c0_i8 = hw.constant 0 : i8
+    %c0_i32 = hw.constant 0 : i32
     %0 = comb.extract %x from 31 : (i32) -> i1
     %1 = comb.extract %x from 23 : (i32) -> i8
     %2 = comb.extract %x from 0 : (i32) -> i23
@@ -102,109 +109,176 @@ module {
     %19 = comb.concat %false, %6 : i1, i8
     %20 = comb.replicate %14 : (i1) -> i48
     %21 = comb.xor %20, %17 : i48
-    %22 = comb.add %19, %18, %c-247_i9 : i9
+    %22 = comb.add %19, %18, %c-230_i9 : i9
     %23 = comb.extract %22 from 8 : (i9) -> i1
-    %24 = comb.concat %c0_i15, %21 : i15, i48
+    %24 = comb.concat %c0_i38, %21 : i38, i48
     %25 = comb.extract %22 from 7 : (i9) -> i1
-    %26 = comb.extract %22 from 6 : (i9) -> i1
-    %27 = comb.or %26, %25, %23 : i1
-    %28 = comb.mux %27, %c0_i63, %24 : i63
-    %29 = comb.extract %22 from 5 : (i9) -> i1
-    %30 = comb.extract %28 from 0 : (i63) -> i31
-    %31 = comb.concat %30, %c0_i16 : i31, i16
-    %32 = comb.extract %28 from 16 : (i63) -> i47
-    %33 = comb.mux %29, %31, %32 : i47
-    %34 = comb.extract %22 from 4 : (i9) -> i1
-    %35 = comb.extract %33 from 0 : (i47) -> i31
-    %36 = comb.extract %33 from 16 : (i47) -> i31
-    %37 = comb.mux %34, %35, %36 : i31
-    %38 = comb.extract %22 from 3 : (i9) -> i1
-    %39 = comb.extract %37 from 0 : (i31) -> i23
-    %40 = comb.extract %37 from 8 : (i31) -> i23
-    %41 = comb.mux %38, %39, %40 : i23
-    %42 = comb.extract %22 from 2 : (i9) -> i1
-    %43 = comb.extract %41 from 0 : (i23) -> i19
-    %44 = comb.extract %41 from 4 : (i23) -> i19
-    %45 = comb.mux %42, %43, %44 : i19
-    %46 = comb.extract %22 from 1 : (i9) -> i1
-    %47 = comb.extract %45 from 0 : (i19) -> i17
-    %48 = comb.extract %45 from 2 : (i19) -> i17
-    %49 = comb.mux %46, %47, %48 : i17
-    %50 = comb.extract %22 from 0 : (i9) -> i1
-    %51 = comb.extract %49 from 0 : (i17) -> i16
-    %52 = comb.extract %49 from 1 : (i17) -> i16
-    %53 = comb.mux %50, %51, %52 : i16
-    %54 = comb.icmp sgt %22, %c11_i9 : i9
-    %55 = comb.mux %23, %c0_i16, %53 : i16
-    %56 = comb.or %54, %4, %11, %58 : i1
-    %57 = sv.reg : !hw.inout<i1> 
-    %58 = sv.read_inout %57 : !hw.inout<i1>
+    %26 = comb.or %25, %23 : i1
+    %27 = comb.mux %26, %c0_i86, %24 : i86
+    %28 = comb.extract %22 from 6 : (i9) -> i1
+    %29 = comb.extract %27 from 0 : (i86) -> i22
+    %30 = comb.concat %29, %c0_i64 : i22, i64
+    %31 = comb.mux %28, %30, %27 : i86
+    %32 = comb.extract %22 from 5 : (i9) -> i1
+    %33 = comb.extract %31 from 0 : (i86) -> i54
+    %34 = comb.concat %33, %c0_i16 : i54, i16
+    %35 = comb.extract %31 from 16 : (i86) -> i70
+    %36 = comb.mux %32, %34, %35 : i70
+    %37 = comb.extract %22 from 4 : (i9) -> i1
+    %38 = comb.extract %36 from 0 : (i70) -> i54
+    %39 = comb.extract %36 from 16 : (i70) -> i54
+    %40 = comb.mux %37, %38, %39 : i54
+    %41 = comb.extract %22 from 3 : (i9) -> i1
+    %42 = comb.extract %40 from 0 : (i54) -> i46
+    %43 = comb.extract %40 from 8 : (i54) -> i46
+    %44 = comb.mux %41, %42, %43 : i46
+    %45 = comb.extract %22 from 2 : (i9) -> i1
+    %46 = comb.extract %44 from 0 : (i46) -> i42
+    %47 = comb.extract %44 from 4 : (i46) -> i42
+    %48 = comb.mux %45, %46, %47 : i42
+    %49 = comb.extract %22 from 1 : (i9) -> i1
+    %50 = comb.extract %48 from 0 : (i42) -> i40
+    %51 = comb.extract %48 from 2 : (i42) -> i40
+    %52 = comb.mux %49, %50, %51 : i40
+    %53 = comb.extract %22 from 0 : (i9) -> i1
+    %54 = comb.extract %52 from 0 : (i40) -> i39
+    %55 = comb.extract %52 from 1 : (i40) -> i39
+    %56 = comb.mux %53, %54, %55 : i39
+    %57 = comb.icmp sgt %22, %c33_i9 : i9
+    %58 = comb.mux %23, %c0_i39, %56 : i39
+    %59 = comb.or %57, %4, %11, %61 : i1
+    %60 = sv.reg : !hw.inout<i1> 
+    %61 = sv.read_inout %60 : !hw.inout<i1>
     sv.alwaysff(posedge %clk) {
-      sv.passign %57, %56 : i1
+      sv.passign %60, %59 : i1
     }(syncreset : posedge %reset) {
-      sv.passign %57, %false : i1
+      sv.passign %60, %false : i1
     }
-    %59 = comb.concat %false, %55 : i1, i16
-    %60 = comb.concat %c0_i16, %14 : i16, i1
-    %61 = comb.extract %65 from 0 : (i17) -> i16
-    %62 = comb.concat %false, %61 : i1, i16
-    %63 = comb.add %62, %59, %60 : i17
-    %64 = sv.reg : !hw.inout<i17> 
-    %65 = sv.read_inout %64 : !hw.inout<i17>
+    %62 = comb.extract %58 from 0 : (i39) -> i16
+    %63 = comb.concat %false, %62 : i1, i16
+    %64 = comb.concat %c0_i16, %14 : i16, i1
+    %65 = comb.extract %69 from 0 : (i17) -> i16
+    %66 = comb.concat %false, %65 : i1, i16
+    %67 = comb.add %66, %63, %64 : i17
+    %68 = sv.reg : !hw.inout<i17> 
+    %69 = sv.read_inout %68 : !hw.inout<i17>
     sv.alwaysff(posedge %clk) {
-      sv.passign %64, %63 : i17
+      sv.passign %68, %67 : i17
     }(syncreset : posedge %reset) {
-      sv.passign %64, %c0_i17 : i17
+      sv.passign %68, %c0_i17 : i17
     }
-    %66 = comb.icmp eq %61, %c0_i16 : i16
-    %67 = comb.extract %65 from 15 : (i17) -> i1
-    %68 = comb.xor %61, %c-1_i16 : i16
-    %69 = comb.add %68, %c1_i16 : i16
-    %70 = comb.mux %67, %69, %61 : i16
-    %71 = comb.extract %70 from 8 : (i16) -> i8
-    %72 = comb.icmp eq %71, %c0_i8 : i8
-    %73 = comb.extract %70 from 1 : (i16) -> i7
-    %74 = comb.extract %70 from 9 : (i16) -> i7
-    %75 = comb.mux %72, %73, %74 : i7
-    %76 = comb.extract %75 from 3 : (i7) -> i4
-    %77 = comb.icmp eq %76, %c0_i4 : i4
-    %78 = comb.extract %75 from 0 : (i7) -> i3
-    %79 = comb.extract %75 from 4 : (i7) -> i3
-    %80 = comb.mux %77, %78, %79 : i3
-    %81 = comb.extract %80 from 1 : (i3) -> i2
-    %82 = comb.icmp eq %81, %c0_i2 : i2
-    %83 = comb.extract %80 from 0 : (i3) -> i1
-    %84 = comb.extract %80 from 2 : (i3) -> i1
-    %85 = comb.mux %82, %83, %84 : i1
-    %86 = comb.xor %85, %true : i1
-    %87 = comb.extract %70 from 0 : (i16) -> i7
-    %88 = comb.concat %87, %c0_i8 : i7, i8
-    %89 = comb.extract %70 from 0 : (i16) -> i15
-    %90 = comb.mux %72, %88, %89 : i15
-    %91 = comb.extract %90 from 0 : (i15) -> i11
-    %92 = comb.concat %91, %c0_i4 : i11, i4
-    %93 = comb.mux %77, %92, %90 : i15
-    %94 = comb.extract %93 from 0 : (i15) -> i13
-    %95 = comb.concat %94, %c0_i2 : i13, i2
-    %96 = comb.mux %82, %95, %93 : i15
-    %97 = comb.extract %96 from 0 : (i15) -> i14
-    %98 = comb.concat %97, %false : i14, i1
-    %99 = comb.mux %86, %98, %96 : i15
-    %100 = comb.concat %c0_i6, %72, %77, %82, %86 : i6, i1, i1, i1, i1
-    %101 = comb.sub %c9_i10, %100 : i10
-    %102 = comb.add %101, %c127_i10 : i10
-    %103 = comb.concat %99, %c0_i8 : i15, i8
-    %104 = comb.icmp slt %102, %c1_i10 : i10
-    %105 = comb.icmp sgt %102, %c254_i10 : i10
-    %106 = comb.extract %102 from 0 : (i10) -> i8
-    %107 = comb.or %104, %66 : i1
-    %108 = comb.mux %107, %c0_i8, %106 : i8
-    %109 = comb.mux %105, %c-1_i8, %108 : i8
-    %110 = comb.or %104, %66, %105 : i1
-    %111 = comb.mux %110, %c0_i23, %103 : i23
-    %112 = comb.concat %67, %109, %111 : i1, i8, i23
-    %113 = comb.mux %58, %c2143289344_i32, %112 : i32
-    hw.output %113 : i32
+    %70 = comb.extract %69 from 16 : (i17) -> i1
+    %71 = comb.extract %58 from 16 : (i39) -> i16
+    %72 = comb.concat %false, %71 : i1, i16
+    %73 = comb.concat %c0_i16, %70 : i16, i1
+    %74 = comb.extract %78 from 0 : (i17) -> i16
+    %75 = comb.concat %false, %74 : i1, i16
+    %76 = comb.add %75, %72, %73 : i17
+    %77 = sv.reg : !hw.inout<i17> 
+    %78 = sv.read_inout %77 : !hw.inout<i17>
+    sv.alwaysff(posedge %clk) {
+      sv.passign %77, %76 : i17
+    }(syncreset : posedge %reset) {
+      sv.passign %77, %c0_i17 : i17
+    }
+    %79 = comb.extract %78 from 16 : (i17) -> i1
+    %80 = comb.extract %58 from 32 : (i39) -> i7
+    %81 = comb.concat %false, %80 : i1, i7
+    %82 = comb.concat %c0_i7, %79 : i7, i1
+    %83 = comb.extract %87 from 0 : (i8) -> i7
+    %84 = comb.concat %false, %83 : i1, i7
+    %85 = comb.add %84, %81, %82 : i8
+    %86 = sv.reg : !hw.inout<i8> 
+    %87 = sv.read_inout %86 : !hw.inout<i8>
+    sv.alwaysff(posedge %clk) {
+      sv.passign %86, %85 : i8
+    }(syncreset : posedge %reset) {
+      sv.passign %86, %c0_i8 : i8
+    }
+    %88 = comb.concat %83, %74, %65 : i7, i16, i16
+    %89 = comb.concat %c0_i12, %79, %c0_i12, %70, %c0_i13 : i12, i1, i12, i1, i13
+    %90 = comb.add %88, %89 : i39
+    %91 = comb.icmp eq %90, %c0_i39 : i39
+    %92 = comb.extract %90 from 38 : (i39) -> i1
+    %93 = comb.xor %90, %c-1_i39 : i39
+    %94 = comb.add %93, %c1_i39 : i39
+    %95 = comb.mux %92, %94, %90 : i39
+    %96 = comb.extract %95 from 7 : (i39) -> i32
+    %97 = comb.icmp eq %96, %c0_i32 : i32
+    %98 = comb.extract %95 from 0 : (i39) -> i7
+    %99 = comb.concat %98, %c0_i24 : i7, i24
+    %100 = comb.extract %95 from 8 : (i39) -> i31
+    %101 = comb.mux %97, %99, %100 : i31
+    %102 = comb.extract %101 from 15 : (i31) -> i16
+    %103 = comb.icmp eq %102, %c0_i16 : i16
+    %104 = comb.extract %101 from 0 : (i31) -> i15
+    %105 = comb.extract %101 from 16 : (i31) -> i15
+    %106 = comb.mux %103, %104, %105 : i15
+    %107 = comb.extract %106 from 7 : (i15) -> i8
+    %108 = comb.icmp eq %107, %c0_i8 : i8
+    %109 = comb.extract %106 from 0 : (i15) -> i7
+    %110 = comb.extract %106 from 8 : (i15) -> i7
+    %111 = comb.mux %108, %109, %110 : i7
+    %112 = comb.extract %111 from 3 : (i7) -> i4
+    %113 = comb.icmp eq %112, %c0_i4 : i4
+    %114 = comb.extract %111 from 0 : (i7) -> i3
+    %115 = comb.extract %111 from 4 : (i7) -> i3
+    %116 = comb.mux %113, %114, %115 : i3
+    %117 = comb.extract %116 from 1 : (i3) -> i2
+    %118 = comb.icmp eq %117, %c0_i2 : i2
+    %119 = comb.extract %116 from 0 : (i3) -> i1
+    %120 = comb.extract %116 from 2 : (i3) -> i1
+    %121 = comb.mux %118, %119, %120 : i1
+    %122 = comb.xor %121, %true : i1
+    %123 = comb.extract %95 from 0 : (i39) -> i6
+    %124 = comb.concat %123, %c0_i32 : i6, i32
+    %125 = comb.extract %95 from 0 : (i39) -> i38
+    %126 = comb.mux %97, %124, %125 : i38
+    %127 = comb.extract %126 from 0 : (i38) -> i22
+    %128 = comb.concat %127, %c0_i16 : i22, i16
+    %129 = comb.mux %103, %128, %126 : i38
+    %130 = comb.extract %129 from 0 : (i38) -> i30
+    %131 = comb.concat %130, %c0_i8 : i30, i8
+    %132 = comb.mux %108, %131, %129 : i38
+    %133 = comb.extract %132 from 0 : (i38) -> i34
+    %134 = comb.concat %133, %c0_i4 : i34, i4
+    %135 = comb.mux %113, %134, %132 : i38
+    %136 = comb.extract %135 from 0 : (i38) -> i36
+    %137 = comb.concat %136, %c0_i2 : i36, i2
+    %138 = comb.mux %118, %137, %135 : i38
+    %139 = comb.extract %138 from 0 : (i38) -> i37
+    %140 = comb.concat %139, %false : i37, i1
+    %141 = comb.mux %122, %140, %138 : i38
+    %142 = comb.extract %141 from 0 : (i38) -> i13
+    %143 = comb.icmp ne %142, %c0_i13 : i13
+    %144 = comb.concat %c0_i4, %97, %103, %108, %113, %118, %122 : i4, i1, i1, i1, i1, i1, i1
+    %145 = comb.sub %c15_i10, %144 : i10
+    %146 = comb.extract %141 from 15 : (i38) -> i23
+    %147 = comb.extract %141 from 14 : (i38) -> i1
+    %148 = comb.extract %141 from 13 : (i38) -> i1
+    %149 = comb.extract %141 from 15 : (i38) -> i1
+    %150 = comb.or %148, %143, %149 : i1
+    %151 = comb.and %147, %150 : i1
+    %152 = comb.concat %c0_i24, %151 : i24, i1
+    %153 = comb.concat %c1_i2, %146 : i2, i23
+    %154 = comb.add %153, %152 : i25
+    %155 = comb.extract %154 from 24 : (i25) -> i1
+    %156 = comb.extract %154 from 1 : (i25) -> i23
+    %157 = comb.extract %154 from 0 : (i25) -> i23
+    %158 = comb.mux %155, %156, %157 : i23
+    %159 = comb.concat %c0_i9, %155 : i9, i1
+    %160 = comb.add %145, %159, %c127_i10 : i10
+    %161 = comb.icmp slt %160, %c1_i10 : i10
+    %162 = comb.icmp sgt %160, %c254_i10 : i10
+    %163 = comb.extract %160 from 0 : (i10) -> i8
+    %164 = comb.or %161, %91 : i1
+    %165 = comb.mux %164, %c0_i8, %163 : i8
+    %166 = comb.mux %162, %c-1_i8, %165 : i8
+    %167 = comb.or %161, %91, %162 : i1
+    %168 = comb.mux %167, %c0_i23, %158 : i23
+    %169 = comb.concat %92, %166, %168 : i1, i8, i23
+    %170 = comb.mux %61, %c2143289344_i32, %169 : i32
+    hw.output %170 : i32
   }
 }
 

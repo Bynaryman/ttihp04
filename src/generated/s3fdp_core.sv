@@ -60,58 +60,86 @@ module s3fdp_accum_core_wE8_wF23_cs16(
   output [31:0] r
 );
 
-  reg  [16:0] _GEN;
-  reg         _GEN_0;
-  wire        _GEN_1 = x[30:23] == 8'h0;
-  wire        _GEN_2 = y[30:23] == 8'h0;
-  wire        _GEN_3 = x[31] ^ y[31];
-  wire [8:0]  _GEN_4 =
-    {1'h0, _GEN_1 ? 8'h1 : x[30:23]} + {1'h0, _GEN_2 ? 8'h1 : y[30:23]} - 9'hF7;
-  wire [62:0] _GEN_5 =
-    _GEN_4[6] | _GEN_4[7] | _GEN_4[8]
-      ? 63'h0
-      : {15'h0, {48{_GEN_3}} ^ {24'h0, ~_GEN_1, x[22:0]} * {24'h0, ~_GEN_2, y[22:0]}};
-  wire [46:0] _GEN_6 = _GEN_4[5] ? {_GEN_5[30:0], 16'h0} : _GEN_5[62:16];
-  wire [30:0] _GEN_7 = _GEN_4[4] ? _GEN_6[30:0] : _GEN_6[46:16];
-  wire [22:0] _GEN_8 = _GEN_4[3] ? _GEN_7[22:0] : _GEN_7[30:8];
-  wire [18:0] _GEN_9 = _GEN_4[2] ? _GEN_8[18:0] : _GEN_8[22:4];
-  wire [16:0] _GEN_10 = _GEN_4[1] ? _GEN_9[16:0] : _GEN_9[18:2];
+  reg  [7:0]  _GEN;
+  reg  [16:0] _GEN_0;
+  reg  [16:0] _GEN_1;
+  reg         _GEN_2;
+  wire        _GEN_3 = x[30:23] == 8'h0;
+  wire        _GEN_4 = y[30:23] == 8'h0;
+  wire        _GEN_5 = x[31] ^ y[31];
+  wire [8:0]  _GEN_6 =
+    {1'h0, _GEN_3 ? 8'h1 : x[30:23]} + {1'h0, _GEN_4 ? 8'h1 : y[30:23]} - 9'hE6;
+  wire [85:0] _GEN_7 =
+    _GEN_6[7] | _GEN_6[8]
+      ? 86'h0
+      : {38'h0, {48{_GEN_5}} ^ {24'h0, ~_GEN_3, x[22:0]} * {24'h0, ~_GEN_4, y[22:0]}};
+  wire [85:0] _GEN_8 = _GEN_6[6] ? {_GEN_7[21:0], 64'h0} : _GEN_7;
+  wire [69:0] _GEN_9 = _GEN_6[5] ? {_GEN_8[53:0], 16'h0} : _GEN_8[85:16];
+  wire [53:0] _GEN_10 = _GEN_6[4] ? _GEN_9[53:0] : _GEN_9[69:16];
+  wire [45:0] _GEN_11 = _GEN_6[3] ? _GEN_10[45:0] : _GEN_10[53:8];
+  wire [41:0] _GEN_12 = _GEN_6[2] ? _GEN_11[41:0] : _GEN_11[45:4];
+  wire [39:0] _GEN_13 = _GEN_6[1] ? _GEN_12[39:0] : _GEN_12[41:2];
+  wire [38:0] _GEN_14 = _GEN_6[8] ? 39'h0 : _GEN_6[0] ? _GEN_13[38:0] : _GEN_13[39:1];
   always_ff @(posedge clk) begin
     if (reset)
-      _GEN_0 <= 1'h0;
+      _GEN_2 <= 1'h0;
     else
-      _GEN_0 <= $signed(_GEN_4) > 9'shB | (&(x[30:23])) | (&(y[30:23])) | _GEN_0;
+      _GEN_2 <= $signed(_GEN_6) > 9'sh21 | (&(x[30:23])) | (&(y[30:23])) | _GEN_2;
   end // always_ff @(posedge)
   always_ff @(posedge clk) begin
     if (reset)
-      _GEN <= 17'h0;
+      _GEN_1 <= 17'h0;
     else
-      _GEN <=
-        {1'h0, _GEN[15:0]}
-        + {1'h0, _GEN_4[8] ? 16'h0 : _GEN_4[0] ? _GEN_10[15:0] : _GEN_10[16:1]}
-        + {16'h0, _GEN_3};
+      _GEN_1 <= {1'h0, _GEN_1[15:0]} + {1'h0, _GEN_14[15:0]} + {16'h0, _GEN_5};
   end // always_ff @(posedge)
-  wire        _GEN_11 = _GEN[15:0] == 16'h0;
-  wire [15:0] _GEN_12 = _GEN[15] ? ~(_GEN[15:0]) + 16'h1 : _GEN[15:0];
-  wire        _GEN_13 = _GEN_12[15:8] == 8'h0;
-  wire [6:0]  _GEN_14 = _GEN_13 ? _GEN_12[7:1] : _GEN_12[15:9];
-  wire        _GEN_15 = _GEN_14[6:3] == 4'h0;
-  wire [2:0]  _GEN_16 = _GEN_15 ? _GEN_14[2:0] : _GEN_14[6:4];
-  wire        _GEN_17 = _GEN_16[2:1] == 2'h0;
-  wire        _GEN_18 = ~(_GEN_17 ? _GEN_16[0] : _GEN_16[2]);
-  wire [14:0] _GEN_19 = _GEN_13 ? {_GEN_12[6:0], 8'h0} : _GEN_12[14:0];
-  wire [14:0] _GEN_20 = _GEN_15 ? {_GEN_19[10:0], 4'h0} : _GEN_19;
-  wire [14:0] _GEN_21 = _GEN_17 ? {_GEN_20[12:0], 2'h0} : _GEN_20;
-  wire [9:0]  _GEN_22 = 10'h9 - {6'h0, _GEN_13, _GEN_15, _GEN_17, _GEN_18} + 10'h7F;
-  wire        _GEN_23 = $signed(_GEN_22) < 10'sh1;
-  wire        _GEN_24 = $signed(_GEN_22) > 10'shFE;
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_0 <= 17'h0;
+    else
+      _GEN_0 <= {1'h0, _GEN_0[15:0]} + {1'h0, _GEN_14[31:16]} + {16'h0, _GEN_1[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN <= 8'h0;
+    else
+      _GEN <= {1'h0, _GEN[6:0]} + {1'h0, _GEN_14[38:32]} + {7'h0, _GEN_0[16]};
+  end // always_ff @(posedge)
+  wire [38:0] _GEN_15 =
+    {_GEN[6:0], _GEN_0[15:0], _GEN_1[15:0]}
+    + {12'h0, _GEN_0[16], 12'h0, _GEN_1[16], 13'h0};
+  wire        _GEN_16 = _GEN_15 == 39'h0;
+  wire [38:0] _GEN_17 = _GEN_15[38] ? ~_GEN_15 + 39'h1 : _GEN_15;
+  wire        _GEN_18 = _GEN_17[38:7] == 32'h0;
+  wire [30:0] _GEN_19 = _GEN_18 ? {_GEN_17[6:0], 24'h0} : _GEN_17[38:8];
+  wire        _GEN_20 = _GEN_19[30:15] == 16'h0;
+  wire [14:0] _GEN_21 = _GEN_20 ? _GEN_19[14:0] : _GEN_19[30:16];
+  wire        _GEN_22 = _GEN_21[14:7] == 8'h0;
+  wire [6:0]  _GEN_23 = _GEN_22 ? _GEN_21[6:0] : _GEN_21[14:8];
+  wire        _GEN_24 = _GEN_23[6:3] == 4'h0;
+  wire [2:0]  _GEN_25 = _GEN_24 ? _GEN_23[2:0] : _GEN_23[6:4];
+  wire        _GEN_26 = _GEN_25[2:1] == 2'h0;
+  wire        _GEN_27 = ~(_GEN_26 ? _GEN_25[0] : _GEN_25[2]);
+  wire [37:0] _GEN_28 = _GEN_18 ? {_GEN_17[5:0], 32'h0} : _GEN_17[37:0];
+  wire [37:0] _GEN_29 = _GEN_20 ? {_GEN_28[21:0], 16'h0} : _GEN_28;
+  wire [37:0] _GEN_30 = _GEN_22 ? {_GEN_29[29:0], 8'h0} : _GEN_29;
+  wire [37:0] _GEN_31 = _GEN_24 ? {_GEN_30[33:0], 4'h0} : _GEN_30;
+  wire [37:0] _GEN_32 = _GEN_26 ? {_GEN_31[35:0], 2'h0} : _GEN_31;
+  wire [37:0] _GEN_33 = _GEN_27 ? {_GEN_32[36:0], 1'h0} : _GEN_32;
+  wire [24:0] _GEN_34 =
+    {2'h1, _GEN_33[37:15]}
+    + {24'h0, _GEN_33[14] & (_GEN_33[13] | (|(_GEN_33[12:0])) | _GEN_33[15])};
+  wire [9:0]  _GEN_35 =
+    10'hF - {4'h0, _GEN_18, _GEN_20, _GEN_22, _GEN_24, _GEN_26, _GEN_27}
+    + {9'h0, _GEN_34[24]} + 10'h7F;
+  wire        _GEN_36 = $signed(_GEN_35) < 10'sh1;
+  wire        _GEN_37 = $signed(_GEN_35) > 10'shFE;
   assign r =
-    _GEN_0
+    _GEN_2
       ? 32'h7FC00000
-      : {_GEN[15],
-         _GEN_24 ? 8'hFF : _GEN_23 | _GEN_11 ? 8'h0 : _GEN_22[7:0],
-         _GEN_23 | _GEN_11 | _GEN_24
+      : {_GEN_15[38],
+         _GEN_37 ? 8'hFF : _GEN_36 | _GEN_16 ? 8'h0 : _GEN_35[7:0],
+         _GEN_36 | _GEN_16 | _GEN_37
            ? 23'h0
-           : {_GEN_18 ? {_GEN_21[13:0], 1'h0} : _GEN_21, 8'h0}};
+           : _GEN_34[24] ? _GEN_34[23:1] : _GEN_34[22:0]};
 endmodule
 

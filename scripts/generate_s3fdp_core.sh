@@ -16,7 +16,7 @@ CORE_SV_OUT="${CORE_SV_OUT:-$repo_root/src/generated/s3fdp_core.sv}"
 WRAPPER_SV_IN="${WRAPPER_SV_IN:-$repo_root/src/project.sv}"
 PROJECT_V_OUT="${PROJECT_V_OUT:-$repo_root/src/project.v}"
 
-S3FDP_OPTS='lowering-mode=specialized target-frequency=5e7 specializations=enable=s3fdp,s3fdp.ovf=4,s3fdp.msb=5,s3fdp.lsb=-6,s3fdp.chunk_size=16'
+S3FDP_OPTS='lowering-mode=specialized target-frequency=5e7 specializations=enable=s3fdp,s3fdp.ovf=5,s3fdp.msb=10,s3fdp.lsb=-23,s3fdp.chunk_size=16'
 
 resolve_tool() {
   local tool="$1"
