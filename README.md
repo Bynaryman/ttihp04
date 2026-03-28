@@ -122,6 +122,13 @@ S3FDP_OPTS='lowering-mode=specialized target-frequency=5e7 specializations=enabl
   ./scripts/generate_s3fdp_core.sh
 ```
 
+To regenerate the default profile afterwards, just run:
+
+```sh
+unset S3FDP_OPTS
+./scripts/generate_s3fdp_core.sh
+```
+
 A representative comb-level view produced in the flow is shown below:
 
 ![MLIR to SystemVerilog / comb-focused view (from codez examples)](docs/mlir_to_systemverilog_comb.png)
