@@ -186,9 +186,6 @@ Test vector in `test/test.py`:
 - `Towards Optimized Arithmetic Circuits with MLIR` (HAL): https://hal.science/hal-05385229v1
 - `Towards Multi-Level Arithmetic Optimizations` (HAL): https://hal.science/hal-05063466v1
 - `Arithmetic Lowering with Emeraude-MLIR: Bridging Tensor and DSP Kernels to Silicon Datapaths` (HAL): https://hal.science/hal-05489427v1
-- `An Open-Source Framework for Efficient Numerically-Tailored Computations` (HAL): https://hal.science/hal-04277512v1
-- `LLMMMM: Large Language Models Matrix-Matrix Multiplications Characterization on Open Silicon` (HAL): https://hal.science/hal-04592229v1
-- PhD thesis, `Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs` (HAL): https://theses.hal.science/tel-04754167v3
 - FloPoCo2 development branch used in this flow, carrying the IR-generation refactoring: https://gitlab.com/flopoco/flopoco/-/tree/dev/lledoux
 - CIRCT contribution, `convert-index-to-uint` transform: https://github.com/llvm/circt/pull/9263
 - CIRCT contribution, multi-result `scf.index_switch` support: https://github.com/llvm/circt/pull/9245
@@ -198,8 +195,7 @@ Test vector in `test/test.py`:
 - CIRCT: https://github.com/llvm/circt
 - TinyTapeout: https://tinytapeout.com/
 - FloPoCo main: https://gitlab.com/flopoco/flopoco
-- `emeraude-mlir`: my current repository, not yet open
-- This artifact repo: https://github.com/Bynaryman/ttihp04
+- PhD thesis, `Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs` (HAL): https://theses.hal.science/tel-04754167v3
 
 ## Cite This Work
 
