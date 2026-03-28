@@ -79,9 +79,9 @@ Source: `flow/mlir/s3fdp_loop_accum.mlir`
 
 Specialization is configured in `scripts/generate_s3fdp_core.sh`:
 
-- `s3fdp.ovf=5`
-- `s3fdp.msb=10`
-- `s3fdp.lsb=-23`
+- `s3fdp.ovf=4`
+- `s3fdp.msb=254`
+- `s3fdp.lsb=-298`
 - `s3fdp.chunk_size=16`
 
 A representative comb-level view produced in the flow is shown below:

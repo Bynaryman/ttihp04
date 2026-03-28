@@ -223,86 +223,435 @@ module s3fdp_accum_core_wE8_wF23_cs16(
   output [31:0] r
 );
 
-  reg  [7:0]  _GEN;
-  reg  [16:0] _GEN_0;
-  reg  [16:0] _GEN_1;
-  reg         _GEN_2;
-  wire        _GEN_3 = x[30:23] == 8'h0;
-  wire        _GEN_4 = y[30:23] == 8'h0;
-  wire        _GEN_5 = x[31] ^ y[31];
-  wire [8:0]  _GEN_6 =
-    {1'h0, _GEN_3 ? 8'h1 : x[30:23]} + {1'h0, _GEN_4 ? 8'h1 : y[30:23]} - 9'hE6;
-  wire [85:0] _GEN_7 =
-    _GEN_6[7] | _GEN_6[8]
-      ? 86'h0
-      : {38'h0, {48{_GEN_5}} ^ {24'h0, ~_GEN_3, x[22:0]} * {24'h0, ~_GEN_4, y[22:0]}};
-  wire [85:0] _GEN_8 = _GEN_6[6] ? {_GEN_7[21:0], 64'h0} : _GEN_7;
-  wire [69:0] _GEN_9 = _GEN_6[5] ? {_GEN_8[53:0], 16'h0} : _GEN_8[85:16];
-  wire [53:0] _GEN_10 = _GEN_6[4] ? _GEN_9[53:0] : _GEN_9[69:16];
-  wire [45:0] _GEN_11 = _GEN_6[3] ? _GEN_10[45:0] : _GEN_10[53:8];
-  wire [41:0] _GEN_12 = _GEN_6[2] ? _GEN_11[41:0] : _GEN_11[45:4];
-  wire [39:0] _GEN_13 = _GEN_6[1] ? _GEN_12[39:0] : _GEN_12[41:2];
-  wire [38:0] _GEN_14 = _GEN_6[8] ? 39'h0 : _GEN_6[0] ? _GEN_13[38:0] : _GEN_13[39:1];
+  reg  [13:0]  _GEN;
+  reg  [16:0]  _GEN_0;
+  reg  [16:0]  _GEN_1;
+  reg  [16:0]  _GEN_2;
+  reg  [16:0]  _GEN_3;
+  reg  [16:0]  _GEN_4;
+  reg  [16:0]  _GEN_5;
+  reg  [16:0]  _GEN_6;
+  reg  [16:0]  _GEN_7;
+  reg  [16:0]  _GEN_8;
+  reg  [16:0]  _GEN_9;
+  reg  [16:0]  _GEN_10;
+  reg  [16:0]  _GEN_11;
+  reg  [16:0]  _GEN_12;
+  reg  [16:0]  _GEN_13;
+  reg  [16:0]  _GEN_14;
+  reg  [16:0]  _GEN_15;
+  reg  [16:0]  _GEN_16;
+  reg  [16:0]  _GEN_17;
+  reg  [16:0]  _GEN_18;
+  reg  [16:0]  _GEN_19;
+  reg  [16:0]  _GEN_20;
+  reg  [16:0]  _GEN_21;
+  reg  [16:0]  _GEN_22;
+  reg  [16:0]  _GEN_23;
+  reg  [16:0]  _GEN_24;
+  reg  [16:0]  _GEN_25;
+  reg  [16:0]  _GEN_26;
+  reg  [16:0]  _GEN_27;
+  reg  [16:0]  _GEN_28;
+  reg  [16:0]  _GEN_29;
+  reg  [16:0]  _GEN_30;
+  reg  [16:0]  _GEN_31;
+  reg  [16:0]  _GEN_32;
+  reg  [16:0]  _GEN_33;
+  reg          _GEN_34;
+  wire         _GEN_35 = x[30:23] == 8'h0;
+  wire         _GEN_36 = y[30:23] == 8'h0;
+  wire         _GEN_37 = x[31] ^ y[31];
+  wire [47:0]  _GEN_38 =
+    {48{_GEN_37}} ^ {24'h0, ~_GEN_35, x[22:0]} * {24'h0, ~_GEN_36, y[22:0]};
+  wire [8:0]   _GEN_39 =
+    {1'h0, _GEN_35 ? 8'h1 : x[30:23]} + {1'h0, _GEN_36 ? 8'h1 : y[30:23]} + 9'h2D;
+  wire [558:0] _GEN_40 = _GEN_39[8] ? {255'h0, _GEN_38, 256'h0} : {511'h0, _GEN_38};
+  wire [558:0] _GEN_41 = _GEN_39[7] ? {_GEN_40[430:0], 128'h0} : _GEN_40;
+  wire [558:0] _GEN_42 = _GEN_39[6] ? {_GEN_41[494:0], 64'h0} : _GEN_41;
+  wire [542:0] _GEN_43 = _GEN_39[5] ? {_GEN_42[526:0], 16'h0} : _GEN_42[558:16];
+  wire [526:0] _GEN_44 = _GEN_39[4] ? _GEN_43[526:0] : _GEN_43[542:16];
+  wire [518:0] _GEN_45 = _GEN_39[3] ? _GEN_44[518:0] : _GEN_44[526:8];
+  wire [514:0] _GEN_46 = _GEN_39[2] ? _GEN_45[514:0] : _GEN_45[518:4];
+  wire [512:0] _GEN_47 = _GEN_39[1] ? _GEN_46[512:0] : _GEN_46[514:2];
+  wire [556:0] _GEN_48 =
+    _GEN_39[8] ? 557'h0 : {{45{_GEN_37}}, _GEN_39[0] ? _GEN_47[511:0] : _GEN_47[512:1]};
   always_ff @(posedge clk) begin
     if (reset)
-      _GEN_2 <= 1'h0;
+      _GEN_34 <= 1'h0;
     else
-      _GEN_2 <= $signed(_GEN_6) > 9'sh21 | (&(x[30:23])) | (&(y[30:23])) | _GEN_2;
+      _GEN_34 <= $signed(_GEN_39) > 9'sh28 | (&(x[30:23])) | (&(y[30:23])) | _GEN_34;
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_33 <= 17'h0;
+    else
+      _GEN_33 <= {1'h0, _GEN_33[15:0]} + {1'h0, _GEN_48[15:0]} + {16'h0, _GEN_37};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_32 <= 17'h0;
+    else
+      _GEN_32 <= {1'h0, _GEN_32[15:0]} + {1'h0, _GEN_48[31:16]} + {16'h0, _GEN_33[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_31 <= 17'h0;
+    else
+      _GEN_31 <= {1'h0, _GEN_31[15:0]} + {1'h0, _GEN_48[47:32]} + {16'h0, _GEN_32[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_30 <= 17'h0;
+    else
+      _GEN_30 <= {1'h0, _GEN_30[15:0]} + {1'h0, _GEN_48[63:48]} + {16'h0, _GEN_31[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_29 <= 17'h0;
+    else
+      _GEN_29 <= {1'h0, _GEN_29[15:0]} + {1'h0, _GEN_48[79:64]} + {16'h0, _GEN_30[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_28 <= 17'h0;
+    else
+      _GEN_28 <= {1'h0, _GEN_28[15:0]} + {1'h0, _GEN_48[95:80]} + {16'h0, _GEN_29[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_27 <= 17'h0;
+    else
+      _GEN_27 <= {1'h0, _GEN_27[15:0]} + {1'h0, _GEN_48[111:96]} + {16'h0, _GEN_28[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_26 <= 17'h0;
+    else
+      _GEN_26 <= {1'h0, _GEN_26[15:0]} + {1'h0, _GEN_48[127:112]} + {16'h0, _GEN_27[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_25 <= 17'h0;
+    else
+      _GEN_25 <= {1'h0, _GEN_25[15:0]} + {1'h0, _GEN_48[143:128]} + {16'h0, _GEN_26[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_24 <= 17'h0;
+    else
+      _GEN_24 <= {1'h0, _GEN_24[15:0]} + {1'h0, _GEN_48[159:144]} + {16'h0, _GEN_25[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_23 <= 17'h0;
+    else
+      _GEN_23 <= {1'h0, _GEN_23[15:0]} + {1'h0, _GEN_48[175:160]} + {16'h0, _GEN_24[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_22 <= 17'h0;
+    else
+      _GEN_22 <= {1'h0, _GEN_22[15:0]} + {1'h0, _GEN_48[191:176]} + {16'h0, _GEN_23[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_21 <= 17'h0;
+    else
+      _GEN_21 <= {1'h0, _GEN_21[15:0]} + {1'h0, _GEN_48[207:192]} + {16'h0, _GEN_22[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_20 <= 17'h0;
+    else
+      _GEN_20 <= {1'h0, _GEN_20[15:0]} + {1'h0, _GEN_48[223:208]} + {16'h0, _GEN_21[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_19 <= 17'h0;
+    else
+      _GEN_19 <= {1'h0, _GEN_19[15:0]} + {1'h0, _GEN_48[239:224]} + {16'h0, _GEN_20[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_18 <= 17'h0;
+    else
+      _GEN_18 <= {1'h0, _GEN_18[15:0]} + {1'h0, _GEN_48[255:240]} + {16'h0, _GEN_19[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_17 <= 17'h0;
+    else
+      _GEN_17 <= {1'h0, _GEN_17[15:0]} + {1'h0, _GEN_48[271:256]} + {16'h0, _GEN_18[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_16 <= 17'h0;
+    else
+      _GEN_16 <= {1'h0, _GEN_16[15:0]} + {1'h0, _GEN_48[287:272]} + {16'h0, _GEN_17[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_15 <= 17'h0;
+    else
+      _GEN_15 <= {1'h0, _GEN_15[15:0]} + {1'h0, _GEN_48[303:288]} + {16'h0, _GEN_16[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_14 <= 17'h0;
+    else
+      _GEN_14 <= {1'h0, _GEN_14[15:0]} + {1'h0, _GEN_48[319:304]} + {16'h0, _GEN_15[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_13 <= 17'h0;
+    else
+      _GEN_13 <= {1'h0, _GEN_13[15:0]} + {1'h0, _GEN_48[335:320]} + {16'h0, _GEN_14[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_12 <= 17'h0;
+    else
+      _GEN_12 <= {1'h0, _GEN_12[15:0]} + {1'h0, _GEN_48[351:336]} + {16'h0, _GEN_13[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_11 <= 17'h0;
+    else
+      _GEN_11 <= {1'h0, _GEN_11[15:0]} + {1'h0, _GEN_48[367:352]} + {16'h0, _GEN_12[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_10 <= 17'h0;
+    else
+      _GEN_10 <= {1'h0, _GEN_10[15:0]} + {1'h0, _GEN_48[383:368]} + {16'h0, _GEN_11[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_9 <= 17'h0;
+    else
+      _GEN_9 <= {1'h0, _GEN_9[15:0]} + {1'h0, _GEN_48[399:384]} + {16'h0, _GEN_10[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_8 <= 17'h0;
+    else
+      _GEN_8 <= {1'h0, _GEN_8[15:0]} + {1'h0, _GEN_48[415:400]} + {16'h0, _GEN_9[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_7 <= 17'h0;
+    else
+      _GEN_7 <= {1'h0, _GEN_7[15:0]} + {1'h0, _GEN_48[431:416]} + {16'h0, _GEN_8[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_6 <= 17'h0;
+    else
+      _GEN_6 <= {1'h0, _GEN_6[15:0]} + {1'h0, _GEN_48[447:432]} + {16'h0, _GEN_7[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_5 <= 17'h0;
+    else
+      _GEN_5 <= {1'h0, _GEN_5[15:0]} + {1'h0, _GEN_48[463:448]} + {16'h0, _GEN_6[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_4 <= 17'h0;
+    else
+      _GEN_4 <= {1'h0, _GEN_4[15:0]} + {1'h0, _GEN_48[479:464]} + {16'h0, _GEN_5[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_3 <= 17'h0;
+    else
+      _GEN_3 <= {1'h0, _GEN_3[15:0]} + {1'h0, _GEN_48[495:480]} + {16'h0, _GEN_4[16]};
+  end // always_ff @(posedge)
+  always_ff @(posedge clk) begin
+    if (reset)
+      _GEN_2 <= 17'h0;
+    else
+      _GEN_2 <= {1'h0, _GEN_2[15:0]} + {1'h0, _GEN_48[511:496]} + {16'h0, _GEN_3[16]};
   end // always_ff @(posedge)
   always_ff @(posedge clk) begin
     if (reset)
       _GEN_1 <= 17'h0;
     else
-      _GEN_1 <= {1'h0, _GEN_1[15:0]} + {1'h0, _GEN_14[15:0]} + {16'h0, _GEN_5};
+      _GEN_1 <= {1'h0, _GEN_1[15:0]} + {1'h0, _GEN_48[527:512]} + {16'h0, _GEN_2[16]};
   end // always_ff @(posedge)
   always_ff @(posedge clk) begin
     if (reset)
       _GEN_0 <= 17'h0;
     else
-      _GEN_0 <= {1'h0, _GEN_0[15:0]} + {1'h0, _GEN_14[31:16]} + {16'h0, _GEN_1[16]};
+      _GEN_0 <= {1'h0, _GEN_0[15:0]} + {1'h0, _GEN_48[543:528]} + {16'h0, _GEN_1[16]};
   end // always_ff @(posedge)
   always_ff @(posedge clk) begin
     if (reset)
-      _GEN <= 8'h0;
+      _GEN <= 14'h0;
     else
-      _GEN <= {1'h0, _GEN[6:0]} + {1'h0, _GEN_14[38:32]} + {7'h0, _GEN_0[16]};
+      _GEN <= {1'h0, _GEN[12:0]} + {1'h0, _GEN_48[556:544]} + {13'h0, _GEN_0[16]};
   end // always_ff @(posedge)
-  wire [38:0] _GEN_15 =
-    {_GEN[6:0], _GEN_0[15:0], _GEN_1[15:0]}
-    + {12'h0, _GEN_0[16], 12'h0, _GEN_1[16], 13'h0};
-  wire        _GEN_16 = _GEN_15 == 39'h0;
-  wire [38:0] _GEN_17 = _GEN_15[38] ? ~_GEN_15 + 39'h1 : _GEN_15;
-  wire        _GEN_18 = _GEN_17[38:7] == 32'h0;
-  wire [30:0] _GEN_19 = _GEN_18 ? {_GEN_17[6:0], 24'h0} : _GEN_17[38:8];
-  wire        _GEN_20 = _GEN_19[30:15] == 16'h0;
-  wire [14:0] _GEN_21 = _GEN_20 ? _GEN_19[14:0] : _GEN_19[30:16];
-  wire        _GEN_22 = _GEN_21[14:7] == 8'h0;
-  wire [6:0]  _GEN_23 = _GEN_22 ? _GEN_21[6:0] : _GEN_21[14:8];
-  wire        _GEN_24 = _GEN_23[6:3] == 4'h0;
-  wire [2:0]  _GEN_25 = _GEN_24 ? _GEN_23[2:0] : _GEN_23[6:4];
-  wire        _GEN_26 = _GEN_25[2:1] == 2'h0;
-  wire        _GEN_27 = ~(_GEN_26 ? _GEN_25[0] : _GEN_25[2]);
-  wire [37:0] _GEN_28 = _GEN_18 ? {_GEN_17[5:0], 32'h0} : _GEN_17[37:0];
-  wire [37:0] _GEN_29 = _GEN_20 ? {_GEN_28[21:0], 16'h0} : _GEN_28;
-  wire [37:0] _GEN_30 = _GEN_22 ? {_GEN_29[29:0], 8'h0} : _GEN_29;
-  wire [37:0] _GEN_31 = _GEN_24 ? {_GEN_30[33:0], 4'h0} : _GEN_30;
-  wire [37:0] _GEN_32 = _GEN_26 ? {_GEN_31[35:0], 2'h0} : _GEN_31;
-  wire [37:0] _GEN_33 = _GEN_27 ? {_GEN_32[36:0], 1'h0} : _GEN_32;
-  wire [24:0] _GEN_34 =
-    {2'h1, _GEN_33[37:15]}
-    + {24'h0, _GEN_33[14] & (_GEN_33[13] | (|(_GEN_33[12:0])) | _GEN_33[15])};
-  wire [9:0]  _GEN_35 =
-    10'hF - {4'h0, _GEN_18, _GEN_20, _GEN_22, _GEN_24, _GEN_26, _GEN_27}
-    + {9'h0, _GEN_34[24]} + 10'h7F;
-  wire        _GEN_36 = $signed(_GEN_35) < 10'sh1;
-  wire        _GEN_37 = $signed(_GEN_35) > 10'shFE;
+  wire [556:0] _GEN_49 =
+    {_GEN[12:0],
+     _GEN_0[15:0],
+     _GEN_1[15:0],
+     _GEN_2[15:0],
+     _GEN_3[15:0],
+     _GEN_4[15:0],
+     _GEN_5[15:0],
+     _GEN_6[15:0],
+     _GEN_7[15:0],
+     _GEN_8[15:0],
+     _GEN_9[15:0],
+     _GEN_10[15:0],
+     _GEN_11[15:0],
+     _GEN_12[15:0],
+     _GEN_13[15:0],
+     _GEN_14[15:0],
+     _GEN_15[15:0],
+     _GEN_16[15:0],
+     _GEN_17[15:0],
+     _GEN_18[15:0],
+     _GEN_19[15:0],
+     _GEN_20[15:0],
+     _GEN_21[15:0],
+     _GEN_22[15:0],
+     _GEN_23[15:0],
+     _GEN_24[15:0],
+     _GEN_25[15:0],
+     _GEN_26[15:0],
+     _GEN_27[15:0],
+     _GEN_28[15:0],
+     _GEN_29[15:0],
+     _GEN_30[15:0],
+     _GEN_31[15:0],
+     _GEN_32[15:0],
+     _GEN_33[15:0]}
+    + {12'h0,
+       _GEN_0[16],
+       15'h0,
+       _GEN_1[16],
+       15'h0,
+       _GEN_2[16],
+       15'h0,
+       _GEN_3[16],
+       15'h0,
+       _GEN_4[16],
+       15'h0,
+       _GEN_5[16],
+       15'h0,
+       _GEN_6[16],
+       15'h0,
+       _GEN_7[16],
+       15'h0,
+       _GEN_8[16],
+       15'h0,
+       _GEN_9[16],
+       15'h0,
+       _GEN_10[16],
+       15'h0,
+       _GEN_11[16],
+       15'h0,
+       _GEN_12[16],
+       15'h0,
+       _GEN_13[16],
+       15'h0,
+       _GEN_14[16],
+       15'h0,
+       _GEN_15[16],
+       15'h0,
+       _GEN_16[16],
+       15'h0,
+       _GEN_17[16],
+       15'h0,
+       _GEN_18[16],
+       15'h0,
+       _GEN_19[16],
+       15'h0,
+       _GEN_20[16],
+       15'h0,
+       _GEN_21[16],
+       15'h0,
+       _GEN_22[16],
+       15'h0,
+       _GEN_23[16],
+       15'h0,
+       _GEN_24[16],
+       15'h0,
+       _GEN_25[16],
+       15'h0,
+       _GEN_26[16],
+       15'h0,
+       _GEN_27[16],
+       15'h0,
+       _GEN_28[16],
+       15'h0,
+       _GEN_29[16],
+       15'h0,
+       _GEN_30[16],
+       15'h0,
+       _GEN_31[16],
+       15'h0,
+       _GEN_32[16],
+       15'h0,
+       _GEN_33[16],
+       16'h0};
+  wire         _GEN_50 = _GEN_49 == 557'h0;
+  wire [556:0] _GEN_51 = _GEN_49[556] ? ~_GEN_49 + 557'h1 : _GEN_49;
+  wire         _GEN_52 = _GEN_51[556:45] == 512'h0;
+  wire [510:0] _GEN_53 = _GEN_52 ? {_GEN_51[44:0], 466'h0} : _GEN_51[556:46];
+  wire         _GEN_54 = _GEN_53[510:255] == 256'h0;
+  wire [254:0] _GEN_55 = _GEN_54 ? _GEN_53[254:0] : _GEN_53[510:256];
+  wire         _GEN_56 = _GEN_55[254:127] == 128'h0;
+  wire [126:0] _GEN_57 = _GEN_56 ? _GEN_55[126:0] : _GEN_55[254:128];
+  wire         _GEN_58 = _GEN_57[126:63] == 64'h0;
+  wire [62:0]  _GEN_59 = _GEN_58 ? _GEN_57[62:0] : _GEN_57[126:64];
+  wire         _GEN_60 = _GEN_59[62:31] == 32'h0;
+  wire [30:0]  _GEN_61 = _GEN_60 ? _GEN_59[30:0] : _GEN_59[62:32];
+  wire         _GEN_62 = _GEN_61[30:15] == 16'h0;
+  wire [14:0]  _GEN_63 = _GEN_62 ? _GEN_61[14:0] : _GEN_61[30:16];
+  wire         _GEN_64 = _GEN_63[14:7] == 8'h0;
+  wire [6:0]   _GEN_65 = _GEN_64 ? _GEN_63[6:0] : _GEN_63[14:8];
+  wire         _GEN_66 = _GEN_65[6:3] == 4'h0;
+  wire [2:0]   _GEN_67 = _GEN_66 ? _GEN_65[2:0] : _GEN_65[6:4];
+  wire         _GEN_68 = _GEN_67[2:1] == 2'h0;
+  wire         _GEN_69 = ~(_GEN_68 ? _GEN_67[0] : _GEN_67[2]);
+  wire [555:0] _GEN_70 = _GEN_52 ? {_GEN_51[43:0], 512'h0} : _GEN_51[555:0];
+  wire [555:0] _GEN_71 = _GEN_54 ? {_GEN_70[299:0], 256'h0} : _GEN_70;
+  wire [555:0] _GEN_72 = _GEN_56 ? {_GEN_71[427:0], 128'h0} : _GEN_71;
+  wire [555:0] _GEN_73 = _GEN_58 ? {_GEN_72[491:0], 64'h0} : _GEN_72;
+  wire [555:0] _GEN_74 = _GEN_60 ? {_GEN_73[523:0], 32'h0} : _GEN_73;
+  wire [555:0] _GEN_75 = _GEN_62 ? {_GEN_74[539:0], 16'h0} : _GEN_74;
+  wire [555:0] _GEN_76 = _GEN_64 ? {_GEN_75[547:0], 8'h0} : _GEN_75;
+  wire [555:0] _GEN_77 = _GEN_66 ? {_GEN_76[551:0], 4'h0} : _GEN_76;
+  wire [555:0] _GEN_78 = _GEN_68 ? {_GEN_77[553:0], 2'h0} : _GEN_77;
+  wire [555:0] _GEN_79 = _GEN_69 ? {_GEN_78[554:0], 1'h0} : _GEN_78;
+  wire [24:0]  _GEN_80 =
+    {2'h1, _GEN_79[555:533]}
+    + {24'h0, _GEN_79[532] & (_GEN_79[531] | (|(_GEN_79[530:0])) | _GEN_79[533])};
+  wire [11:0]  _GEN_81 =
+    12'h102
+    - {2'h0,
+       _GEN_52,
+       _GEN_54,
+       _GEN_56,
+       _GEN_58,
+       _GEN_60,
+       _GEN_62,
+       _GEN_64,
+       _GEN_66,
+       _GEN_68,
+       _GEN_69} + {11'h0, _GEN_80[24]} + 12'h7F;
+  wire         _GEN_82 = $signed(_GEN_81) < 12'sh1;
+  wire         _GEN_83 = $signed(_GEN_81) > 12'shFE;
   assign r =
-    _GEN_2
+    _GEN_34
       ? 32'h7FC00000
-      : {_GEN_15[38],
-         _GEN_37 ? 8'hFF : _GEN_36 | _GEN_16 ? 8'h0 : _GEN_35[7:0],
-         _GEN_36 | _GEN_16 | _GEN_37
+      : {_GEN_49[556],
+         _GEN_83 ? 8'hFF : _GEN_82 | _GEN_50 ? 8'h0 : _GEN_81[7:0],
+         _GEN_82 | _GEN_50 | _GEN_83
            ? 23'h0
-           : _GEN_34[24] ? _GEN_34[23:1] : _GEN_34[22:0]};
+           : _GEN_80[24] ? _GEN_80[23:1] : _GEN_80[22:0]};
 endmodule
 
